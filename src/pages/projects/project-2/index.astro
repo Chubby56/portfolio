@@ -1,0 +1,86 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project 2</title>
+
+    <style>
+  .image-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  @media (min-width: 700px) {
+    .image-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .image-grid img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+</style>
+
+    
+  </head>
+  <body style="font-family: system-ui, Arial, sans-serif; margin:0;">
+    <main style="max-width:900px; margin:0 auto; padding:48px 20px;">
+      <nav style="display:flex; gap:16px; margin-bottom:32px;">
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+      </nav>
+
+      <h1>Project title</h1>
+      <p><strong>Module:</strong> … | <strong>Year:</strong> …</p>
+
+      <img
+        src="/images/projects/project-2/Clutch1.jpg"
+        alt="Clutch"
+        style="width:50%; border-radius:16px; margin:24px 0;"
+      />
+
+      <h2>Problem</h2>
+      <p>What you were asked to design or analyse.</p>
+
+      <h2>Constraints</h2>
+      <ul>
+        <li>Space / mass / cost</li>
+        <li>Materials</li>
+        <li>Time</li>
+      </ul>
+
+      <h2>Approach</h2>
+      <p>Your design or analysis decisions.</p>
+
+      <h2>Results</h2>
+      <p>What worked, what didn’t, measured outcomes.</p>
+
+      <h2>Reflection</h2>
+      <p>What you would improve next time.</p>
+
+      <h2>Project photos / further design details:</h2>
+
+      <section class="image-grid">
+        <img
+          src="/images/projects/project-2/Clutch3.jpg"
+          alt="Clutch detail 3"
+        />
+
+        <img
+          src="/images/projects/project-2/Clutch4.jpg"
+          alt="Clutch detail 4"
+        />
+
+        <img
+          src="/images/projects/project-2/Clutch2.jpg"
+          alt="Clutch detail 2"
+        />
+      </section>
+
+    </main>
+  </body>
+</html>

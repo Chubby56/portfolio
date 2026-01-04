@@ -1,0 +1,155 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects</title>
+
+    <style>
+      :root {
+        font-family: system-ui, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      nav {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 32px;
+        margin-top: 32px;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .thumb {
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+        background: #f6f6f6;
+        padding: 16px;
+      }
+
+      .card-body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex-grow: 1;
+      }
+
+      .card-body h2 {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      .card-body p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #444;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+
+      <h1>Projects</h1>
+      <p>Take a look at some of my projects below:</p>
+
+      <section class="grid">
+        <!-- Project 1 -->
+        <a class="card" href="/projects/project-1/">
+          <img
+            class="thumb"
+            src="/images/projects/project-1/Image-1.svg"
+            alt="Air/oil separator diagram"
+          />
+          <div class="card-body">
+            <h2>Air/Oil Separator</h2>
+            <p>
+              Design and build of a cylonic Air/Oil separator in collaboration with Rolls-Royce UTC
+            </p>
+          </div>
+        </a>
+
+        <!-- Project 2 -->
+        <a class="card" href="/projects/project-2/">
+          <img
+            class="thumb"
+            src="/images/projects/project-2/Clutch1.jpg"
+            alt="Centrifugal clutch diagram"
+          />
+          <div class="card-body">
+            <h2>Centrifugal clutch</h2>
+            <p>Design and build of a centrifugal clutch</p>
+          </div>
+        </a>
+
+        <!-- Project 3  -->
+        <a class="card" href="/projects/project-3/">
+          <img
+            class="thumb"
+            src="/images/projects/project-3/vpp-3.jpg"
+            alt="Vpp diagram"
+          />
+          <div class="card-body">
+            <h2>Variable pitch propeller</h2>
+            <p>Concept Design of a variable pitch propeller following a strict set of design requirements</p>
+          </div>
+        </a>
+
+            <!-- Project 4 -->
+      <a class="card" href="/projects/project-4/">
+        <img
+          class="thumb"
+          src="/images/projects/Project-4/SP-1.jpg"
+          alt="Project 4"
+        />
+        <div class="card-body">
+          <h2>Control of cartesian robot</h2>
+          <p>Designing and implementing software  to control a cartesian robot </p>
+        </div>
+      </a>
+
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const name = "Cameron McVeigh";
+const tagline = "MEng Mechanical Engineering student — Robotics Engineer";
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{name} | Engineering Portfolio</title>
+    <style>
+      :root { font-family: system-ui, Arial, sans-serif; }
+      body { margin: 0; padding: 0; }
+      main { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
+      nav { display: flex; gap: 16px; margin-bottom: 32px; }
+      a { color: inherit; }
+      .hero { padding: 24px; border: 1px solid #ddd; border-radius: 16px; }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
+      @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+      .card { padding: 16px; border: 1px solid #ddd; border-radius: 16px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+
+      <section class="hero">
+        <h1>{name}</h1>
+        <p>{tagline}</p>
+        <p>
+          Dedicated to providing high quality engineering solutions
+        </p>
+      </section>
+
+      <section class="grid" aria-label="Highlights">
+        <div class="card">
+          <h2>Featured projects</h2>
+          <p>CAD, analysis, manufacturing, lab work, testing.</p>
+          <a href="/projects/">View projects →</a>
+        </div>
+        <div class="card">
+          <h2>CV</h2>
+          <p>Add your CV as a PDF later and link it here.</p>
+          <a href="/about/">About & CV →</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
