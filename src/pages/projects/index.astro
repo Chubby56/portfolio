@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Projects</title>
+    <title>Projects | Cameron McVeigh</title>
 
     <style>
       :root {
@@ -19,14 +20,124 @@
         padding: 48px 20px;
       }
 
-      nav {
+      /* Navigation Styles */
+      nav { 
+        display: flex; 
+        align-items: center;
+        gap: 16px; 
+        margin-bottom: 32px; 
+        position: relative;
+      }
+      
+      /* Dropdown Container */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .dropdown-toggle {
+        background: none;
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
         display: flex;
-        gap: 16px;
-        margin-bottom: 32px;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      
+      .dropdown-toggle:hover {
+        background-color: #f9f9f9;
+        border-color: #999;
+      }
+      
+      /* Hamburger Icon */
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 20px;
+      }
+      
+      .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      
+      .dropdown.active .hamburger span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+      
+      /* Dropdown Menu */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        z-index: 1000;
+      }
+      
+      .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.2s;
+      }
+      
+      .dropdown-menu a:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+      
+      .dropdown-menu a:last-child {
+        border-radius: 0 0 8px 8px;
+      }
+      
+      .dropdown-menu a:hover {
+        background-color: #f5f5f5;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 48px;
       }
 
       h1 {
-        margin-bottom: 8px;
+        font-size: 2.5em;
+        margin: 0 0 16px 0;
+      }
+
+      .page-header p {
+        font-size: 1.1em;
+        margin: 8px 0;
+        color: #555;
       }
 
       .grid {
@@ -85,14 +196,27 @@
   <body>
     <main>
       <nav>
-        <a href="/">Home</a>
-        <a href="/projects/">Projects</a>
-        <a href="/about/">About</a>
-        <a href="/contact/">Contact</a>
+        <div class="dropdown" id="pagesDropdown">
+          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
+            <span class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/about/" role="menuitem">About</a>
+            <a href="/contact/" role="menuitem">Contact</a>
+          </div>
+        </div>
       </nav>
 
-      <h1>Projects</h1>
-      <p>Take a look at some of my projects below:</p>
+      <div class="page-header">
+        <h1>Projects</h1>
+        <p>Take a look at some of my projects below:</p>
+      </div>
 
       <section class="grid">
         <!-- Project 1 -->
@@ -136,20 +260,49 @@
           </div>
         </a>
 
-            <!-- Project 4 -->
-      <a class="card" href="/projects/project-4/">
-        <img
-          class="thumb"
-          src="/images/projects/Project-4/SP-1.jpg"
-          alt="Project 4"
-        />
-        <div class="card-body">
-          <h2>Control of cartesian robot</h2>
-          <p>Designing and implementing software  to control a cartesian robot </p>
-        </div>
-      </a>
-
+        <!-- Project 4 -->
+        <a class="card" href="/projects/project-4/">
+          <img
+            class="thumb"
+            src="/images/projects/Project-4/SP-1.jpg"
+            alt="Project 4"
+          />
+          <div class="card-body">
+            <h2>Control of cartesian robot</h2>
+            <p>Designing and implementing software to control a cartesian robot</p>
+          </div>
+        </a>
       </section>
     </main>
+
+    <script>
+      const dropdown = document.getElementById('pagesDropdown');
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      
+      // Toggle dropdown on click
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = dropdown.classList.contains('active');
+        dropdown.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', !isActive);
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      // Close dropdown on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    </script>
   </body>
 </html>

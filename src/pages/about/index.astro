@@ -1,56 +1,376 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>About</title>
-  </head>
-  <body style="font-family: system-ui, Arial, sans-serif; margin:0;">
-    <main style="max-width:1100px; margin:0 auto; padding:48px 20px; font-family: system-ui, Arial, sans-serif;">
-  <nav style="display:flex; gap:16px; margin-bottom:32px;">
-    <a href="/">Home</a>
-    <a href="/projects/">Projects</a>
-    <a href="/about/">About</a>
-    <a href="/contact/">Contact</a>
-  </nav>
+    <title>About | Cameron McVeigh</title>
+    <style>
+      :root {
+        font-family: system-ui, Arial, sans-serif;
+      }
 
-  <h1>Projects</h1>
-  <p>Selected university engineering projects.</p>
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
 
-  <section
-    style="
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 32px;
-    "
-  >
-    <!-- Project card -->
-    <a
-      href="/projects/project-1/"
-      style="
-        text-decoration: none;
-        color: inherit;
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      /* Navigation Styles */
+      nav { 
+        display: flex; 
+        align-items: center;
+        gap: 16px; 
+        margin-bottom: 32px; 
+        position: relative;
+      }
+      
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .dropdown-toggle {
+        background: white;
         border: 1px solid #ddd;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      
+      .dropdown-toggle:hover {
+        background-color: #f9f9f9;
+        border-color: #999;
+      }
+      
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 20px;
+      }
+      
+      .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      
+      .dropdown.active .hamburger span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+      
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        z-index: 1000;
+      }
+      
+      .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.2s;
+      }
+      
+      .dropdown-menu a:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+      
+      .dropdown-menu a:last-child {
+        border-radius: 0 0 8px 8px;
+      }
+      
+      .dropdown-menu a:hover {
+        background-color: #f5f5f5;
+      }
+
+      /* Page Header */
+      .page-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .page-header h1 {
+        font-size: 2.5em;
+        margin: 0 0 16px 0;
+      }
+
+      .page-header p {
+        font-size: 1.1em;
+        margin: 8px 0;
+        color: #555;
+      }
+
+      /* About Content */
+      .about-content {
+        background: white;
+        padding: 40px;
         border-radius: 16px;
-        overflow: hidden;
-      "
-    >
-      <img
-        src="/images/projects/project-1/Image-1.svg"
-        alt="Project 1 thumbnail"
-        style="width:20%; height:180px; object-fit:contain; background:#f6f6f6;"
-      />
-      <div style="padding:16px;">
-        <h2 style="margin:0 0 8px 0;">Project title</h2>
-        <p style="margin:0; font-size:0.95rem;">
-          One-sentence description of what the project was and what you achieved.
-        </p>
+        border: 1px solid #ddd;
+        margin-bottom: 32px;
+      }
+
+      .about-content h2 {
+        font-size: 1.8em;
+        margin: 0 0 20px 0;
+        color: #333;
+      }
+
+      .about-content p {
+        font-size: 1.05em;
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      .about-section {
+        margin-bottom: 40px;
+      }
+
+      .about-section:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Skills & Interests */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      @media (min-width: 768px) {
+        .skills-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .skill-card {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+      }
+
+      .skill-card h3 {
+        font-size: 1.3em;
+        margin: 0 0 16px 0;
+        color: #333;
+      }
+
+      .skill-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .skill-list li {
+        padding: 8px 0;
+        color: #666;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .skill-list li:last-child {
+        border-bottom: none;
+      }
+
+      .skill-list li:before {
+        content: "▸ ";
+        color: #0066cc;
+        font-weight: bold;
+        margin-right: 8px;
+      }
+
+      /* CV Download */
+      .cv-download {
+        text-align: center;
+        margin-top: 32px;
+        padding: 32px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+      }
+
+      .cv-download h3 {
+        font-size: 1.5em;
+        margin: 0 0 16px 0;
+      }
+
+      .cv-download p {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .download-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: #0066cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+
+      .download-btn:hover {
+        background: #0052a3;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <div class="dropdown" id="pagesDropdown">
+          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
+            <span class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/about/" role="menuitem">About</a>
+            <a href="/contact/" role="menuitem">Contact</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="page-header">
+        <h1>About Me</h1>
+        <p>Get to know more about my background, skills, and interests</p>
       </div>
-    </a>
 
-    <!-- Copy this block for each project -->
-  </section>
-</main>
+      <div class="about-content">
+        <div class="about-section">
+          <h2>Who I Am</h2>
+          <p>
+            I'm Cameron McVeigh, an MEng Mechanical Engineering student with a passion for robotics and innovative engineering solutions. Throughout my studies, I've developed a strong foundation in mechanical design, analysis, and hands-on problem-solving.
+          </p>
+          <p>
+            My academic journey has allowed me to work on diverse projects ranging from CAD design and finite element analysis to robotics control systems and manufacturing processes. I'm particularly interested in the intersection of mechanical engineering and automation, where precision design meets intelligent systems.
+          </p>
+        </div>
 
+        <div class="about-section">
+          <h2>Education</h2>
+          <p>
+            <strong>MEng Mechanical Engineering</strong><br>
+            [Your University Name]<br>
+            [Expected Graduation Year]
+          </p>
+          <p>
+            Relevant coursework includes robotics, control systems, thermodynamics, manufacturing processes, and advanced CAD/CAM techniques.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h2>What Drives Me</h2>
+          <p>
+            I'm driven by the challenge of turning complex engineering problems into elegant, practical solutions. Whether it's optimizing a thermal system, designing a robotic mechanism, or developing manufacturing fixtures, I approach each project with curiosity and determination.
+          </p>
+          <p>
+            Outside of engineering, I'm always looking to expand my knowledge through hands-on projects, industry collaboration opportunities, and staying current with emerging technologies in robotics and automation.
+          </p>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Technical Skills</h3>
+          <ul class="skill-list">
+            <li>CAD Design (SolidWorks, Fusion 360)</li>
+            <li>Finite Element Analysis (FEA)</li>
+            <li>Robotics & Control Systems</li>
+            <li>Manufacturing Processes</li>
+            <li>Programming (Python, MATLAB)</li>
+            <li>Technical Documentation</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <h3>Areas of Interest</h3>
+          <ul class="skill-list">
+            <li>Robotics & Automation</li>
+            <li>Mechanical Design</li>
+            <li>Thermal Systems</li>
+            <li>Manufacturing Innovation</li>
+            <li>Product Development</li>
+            <li>Research & Development</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cv-download">
+        <h3>Download My CV</h3>
+        <p>Want to learn more about my experience and qualifications?</p>
+        <a href="/files/Cameron_McVeigh_CV.pdf" class="download-btn" download>Download CV (PDF)</a>
+      </div>
+    </main>
+
+    <script>
+      const dropdown = document.getElementById('pagesDropdown');
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = dropdown.classList.contains('active');
+        dropdown.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', !isActive);
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    </script>
   </body>
 </html>

@@ -1,24 +1,499 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contact</title>
+    <title>Contact | Cameron McVeigh</title>
+    <style>
+      :root {
+        font-family: system-ui, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      /* Navigation Styles */
+      nav { 
+        display: flex; 
+        align-items: center;
+        gap: 16px; 
+        margin-bottom: 32px; 
+        position: relative;
+      }
+      
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .dropdown-toggle {
+        background: white;
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      
+      .dropdown-toggle:hover {
+        background-color: #f9f9f9;
+        border-color: #999;
+      }
+      
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 20px;
+      }
+      
+      .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      
+      .dropdown.active .hamburger span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+      
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        z-index: 1000;
+      }
+      
+      .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.2s;
+      }
+      
+      .dropdown-menu a:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+      
+      .dropdown-menu a:last-child {
+        border-radius: 0 0 8px 8px;
+      }
+      
+      .dropdown-menu a:hover {
+        background-color: #f5f5f5;
+      }
+
+      /* Page Header */
+      .page-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .page-header h1 {
+        font-size: 2.5em;
+        margin: 0 0 16px 0;
+      }
+
+      .page-header p {
+        font-size: 1.1em;
+        margin: 8px 0;
+        color: #555;
+      }
+
+      /* Contact Container */
+      .contact-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-top: 32px;
+      }
+
+      @media (min-width: 768px) {
+        .contact-container {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Contact Form */
+      .contact-form {
+        background: white;
+        padding: 32px;
+        border-radius: 16px;
+        border: 1px solid #ddd;
+      }
+
+      .contact-form h2 {
+        margin: 0 0 24px 0;
+        font-size: 1.5em;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1em;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #0066cc;
+      }
+
+      .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .submit-btn:hover {
+        background: #0052a3;
+      }
+
+      .submit-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .form-status {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+      }
+
+      .form-status.success {
+        background: #d4edda;
+        color: #155724;
+        display: block;
+      }
+
+      .form-status.error {
+        background: #f8d7da;
+        color: #721c24;
+        display: block;
+      }
+
+      /* Contact Info */
+      .contact-info {
+        background: white;
+        padding: 32px;
+        border-radius: 16px;
+        border: 1px solid #ddd;
+      }
+
+      .contact-info h2 {
+        margin: 0 0 24px 0;
+        font-size: 1.5em;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: start;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .info-icon {
+        width: 40px;
+        height: 40px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .info-content h3 {
+        margin: 0 0 8px 0;
+        font-size: 1.1em;
+        color: #333;
+      }
+
+      .info-content p {
+        margin: 0;
+        color: #666;
+      }
+
+      .info-content a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+
+      .info-content a:hover {
+        text-decoration: underline;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+      }
+
+      .social-btn.linkedin {
+        background: #0077b5;
+      }
+
+      .social-btn.linkedin:hover {
+        background: #006396;
+      }
+
+      .social-btn.instagram {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      }
+
+      .social-btn.instagram:hover {
+        opacity: 0.9;
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui, Arial, sans-serif; margin:0;">
-    <main style="max-width:900px; margin:0 auto; padding:48px 20px;">
-      <nav style="display:flex; gap:16px; margin-bottom:32px;">
-        <a href="/">Home</a>
-        <a href="/projects/">Projects</a>
-        <a href="/about/">About</a>
-        <a href="/contact/">Contact</a>
+  <body>
+    <main>
+      <nav>
+        <div class="dropdown" id="pagesDropdown">
+          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
+            <span class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/about/" role="menuitem">About</a>
+            <a href="/contact/" role="menuitem">Contact</a>
+          </div>
+        </div>
       </nav>
 
-      <h1>Contact</h1>
-      <p>For any other information, Please contact me! :</p>
-      <ul>
-        <li>Email: <a href="mailto:cam3829@gmail.com">cam3829@gmail.com</a></li>
-        <li>LinkedIn: <a href="https://www.linkedin.com/in/cameron-mcveigh56/">Linkedin - Cameron McVeigh</a></li>
-      </ul>
+      <div class="page-header">
+        <h1>Get In Touch</h1>
+        <p>I'd love to hear from you. Send me a message and I'll get back to you as soon as possible.</p>
+      </div>
+
+      <div class="contact-container">
+        <!-- Contact Form -->
+        <div class="contact-form">
+          <h2>Send a Message</h2>
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Name *</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject *</label>
+              <input type="text" id="subject" name="subject" required />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Send Message</button>
+            
+            <div class="form-status" id="formStatus"></div>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <h2>Contact Information</h2>
+          
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <h3>Location</h3>
+              <p>Wolverhampton, England, UK</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">💼</div>
+            <div class="info-content">
+              <h3>Professional</h3>
+              <p>Available for internships and project collaborations</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">🕒</div>
+            <div class="info-content">
+              <h3>Response Time</h3>
+              <p>Typically within 24-48 hours</p>
+            </div>
+          </div>
+
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/cameron-mcveigh56/" class="social-btn linkedin" target="_blank" rel="noopener noreferrer">
+              <span>💼</span> LinkedIn
+            </a>
+            <a href="https://www.instagram.com/cameron_mcveigh/" class="social-btn instagram" target="_blank" rel="noopener noreferrer">
+              <span>📸</span> Instagram
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
+
+    <script>
+      // Dropdown functionality
+      const dropdown = document.getElementById('pagesDropdown');
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = dropdown.classList.contains('active');
+        dropdown.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', !isActive);
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+
+      // Form handling
+      const form = document.getElementById('contactForm');
+      const formStatus = document.getElementById('formStatus');
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          subject: formData.get('subject'),
+          message: formData.get('message')
+        };
+        
+        // Disable submit button
+        const submitBtn = form.querySelector('.submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        // Here you would typically send the data to your backend
+        // For now, we'll simulate a successful submission
+        setTimeout(() => {
+          formStatus.className = 'form-status success';
+          formStatus.textContent = 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+          
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            formStatus.style.display = 'none';
+          }, 5000);
+        }, 1000);
+        
+        // Note: To make this form actually work, you'll need to:
+        // 1. Set up a backend endpoint (or use a service like Formspree, Netlify Forms, etc.)
+        // 2. Replace the setTimeout with an actual fetch/ajax call to your endpoint
+        // Example with Formspree:
+        // fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        //   method: 'POST',
+        //   body: JSON.stringify(data),
+        //   headers: { 'Content-Type': 'application/json' }
+        // })
+      });
+    </script>
   </body>
 </html>
