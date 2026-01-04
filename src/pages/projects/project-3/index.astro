@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Variable Pitch Propeller | Cameron McVeigh</title>
+    <style>
+      :root {
+        font-family: system-ui, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      /* Navigation Styles */
+      nav { 
+        display: flex; 
+        align-items: center;
+        gap: 16px; 
+        margin-bottom: 32px; 
+        position: relative;
+      }
+      
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .dropdown-toggle {
+        background: white;
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      
+      .dropdown-toggle:hover {
+        background-color: #f9f9f9;
+        border-color: #999;
+      }
+      
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 20px;
+      }
+      
+      .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      
+      .dropdown.active .hamburger span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .dropdown.active .hamburger span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+      
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        z-index: 1000;
+      }
+      
+      .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.2s;
+      }
+      
+      .dropdown-menu a:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+      
+      .dropdown-menu a:last-child {
+        border-radius: 0 0 8px 8px;
+      }
+      
+      .dropdown-menu a:hover {
+        background-color: #f5f5f5;
+      }
+
+      /* Back Button */
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: white;
+        color: #333;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95em;
+        transition: background-color 0.2s, border-color 0.2s;
+        margin-bottom: 24px;
+      }
+
+      .back-button:hover {
+        background-color: #f9f9f9;
+        border-color: #999;
+      }
+
+      .back-arrow {
+        font-size: 1.2em;
+      }
+
+      /* Project Content */
+      .project-content {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        border: 1px solid #ddd;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin: 0 0 16px 0;
+        color: #222;
+      }
+
+      .project-meta {
+        color: #666;
+        margin-bottom: 32px;
+        font-size: 0.95em;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .project-meta strong {
+        color: #333;
+      }
+
+      .project-image {
+        width: 100%;
+        border-radius: 12px;
+        margin: 24px 0;
+        display: block;
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+      }
+
+      .image-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      @media (min-width: 768px) {
+        .image-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .image-grid img {
+        width: 100%;
+        border-radius: 12px;
+        display: block;
+      }
+
+      h2 {
+        font-size: 1.6em;
+        margin: 32px 0 16px 0;
+        color: #333;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 8px;
+      }
+
+      p {
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      ul {
+        line-height: 1.8;
+        color: #555;
+        margin: 16px 0;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .highlight-box {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 16px 20px;
+        margin: 24px 0;
+        border-radius: 4px;
+      }
+
+      .highlight-box strong {
+        color: #667eea;
+      }
+
+      .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      @media (min-width: 768px) {
+        .specs-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .spec-item {
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 8px;
+      }
+
+      .spec-item strong {
+        display: block;
+        color: #333;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <div class="dropdown" id="pagesDropdown">
+          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
+            <span class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/about/" role="menuitem">About</a>
+            <a href="/contact/" role="menuitem">Contact</a>
+          </div>
+        </div>
+      </nav>
+
+      <a href="/projects/" class="back-button">
+        <span class="back-arrow">←</span> Back to Projects
+      </a>
+
+      <div class="project-content">
+        <h1>Variable Pitch Propeller Concept Design</h1>
+        <p class="project-meta">
+          <strong>Module:</strong> MMME 2044 | <strong>Year:</strong> 2023-2024
+        </p>
+
+        <img
+          src="/images/projects/project-3/vpp-3.jpg"
+          alt="Variable Pitch Propeller CAD Model"
+          style="width:50%; display:block; margin:24px auto; border-radius:12px;"
+        />
+
+        <h2>Project Overview</h2>
+        <p>
+          This individual design project involved developing a complete variable pitch propeller system for marine workboats. The propeller eliminates the need for a reversing gear by varying blade pitch, allowing forward, reverse, and stationary operation with a single control lever. The design integrates hydraulic actuation, custom hub mechanism, and standardized blade forgings.
+        </p>
+
+        <div class="highlight-box">
+          <strong>Key Achievement:</strong> Successfully designed a hydraulically-actuated variable pitch mechanism achieving 10 knots forward and 6 knots reverse while meeting all safety, reliability, and manufacturing constraints for 5000 units/year production.
+        </div>
+
+        <h2>Design Challenge</h2>
+        <p>
+          The propeller needed to provide reliable pitch control while withstanding shock loads (150% peak torque during fouling), operating in contaminated shallow water, and maintaining oil/water tight integrity. The design had to use existing blade forgings (non-negotiable requirement) and integrate with a 200 bar hydraulic system through rotating concentric oil tubes.
+        </p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <strong>Speed Requirements</strong>
+            10 knots forward, 6 knots reverse
+          </div>
+          <div class="spec-item">
+            <strong>Pitch Range</strong>
+            +30° forward to -15° reverse
+          </div>
+          <div class="spec-item">
+            <strong>Maximum Diameter</strong>
+            500mm (hub minimized for efficiency)
+          </div>
+          <div class="spec-item">
+            <strong>Design Life</strong>
+            100,000 major cycles, 10,000 hour bearing L10 life
+          </div>
+        </div>
+
+        <h2>Design Solution</h2>
+        <p>
+          The design uses a hydraulic piston mechanism housed within the propeller hub to control blade pitch. Three blades rotate on bearings within the hub, actuated through a linkage system connected to a central hydraulic piston. Concentric rotating oil tubes (mounted on the 500mm drive shaft) deliver 200 bar hydraulic pressure to control forward/reverse pitch selection.
+        </p>
+
+        <h3>Key Components</h3>
+        <ul>
+          <li><strong>Hub Assembly:</strong> Custom-designed to house pitch mechanism while minimizing diameter for efficiency, integrated with drive shaft flange (defined interface)</li>
+          <li><strong>Blade Mechanism:</strong> Company-standard forged blades (70% efficiency, non-changeable profile) with machined round bases, mounted on bearings for pitch rotation</li>
+          <li><strong>Hydraulic Actuation:</strong> Central piston driven by 200 bar hydraulic system through concentric tubes, designed to handle 160 Nm maximum blade root torque</li>
+          <li><strong>Bearing & Seals:</strong> Rear thrust bearing and cylindrical roller bearing (500mm spacing), designed for contaminated water operation with appropriate sealing to prevent propeller loss</li>
+        </ul>
+
+        <div class="image-grid">
+          <img
+          src="/images/projects/project-3/vpp-3 (2).jpg"
+          alt="Variable Pitch Propeller CAD Model"
+          style="width:100%; display:block; margin:24px auto; border-radius:12px;"
+        />
+          <img
+          src="/images/projects/project-3/vpp4.png"
+          alt="Variable Pitch Propeller CAD Model"
+          style="width:100%; display:block; margin:24px auto; border-radius:12px;"
+        />
+        </div>
+
+        <h2>Analysis & Calculations</h2>
+        <p>Comprehensive analysis validated the design:</p>
+        <ul>
+          <li>Momentum Theory analysis to verify blade suitability and actual vs. ideal propeller area</li>
+          <li>Shaft stress analysis for ultimate and fatigue loading (shock torque 150% of peak, 100,000 major cycles)</li>
+          <li>Whirling speed calculations for drive shaft and oil tubes (minimum 120% above 1300 rpm operating speed)</li>
+          <li>Bolt preload calculations for main flange to prevent fatigue failure and ensure no slippage</li>
+          <li>Bearing life calculations for L10 life of 10,000 hours</li>
+          <li>Hydraulic system sizing for 160 Nm blade actuation torque at 200 bar pressure</li>
+        </ul>
+
+        <h2>Material Selection</h2>
+        <p>
+          Materials were selected for marine environment durability and manufacturing efficiency. Marine-grade stainless steel and corrosion-resistant alloys were specified for submerged components. Bearing selection prioritized contamination resistance given shallow water operation stirring bottom sediment. All joints specified with appropriate marine sealing to maintain water/oil tight integrity during all operating conditions.
+        </p>
+
+        <h2>Design Considerations</h2>
+        <ul>
+          <li><strong>Manufacturability:</strong> Designed for 5000 units/year production using standard processes (casting, forging, machining), blade forgings already optimized by company</li>
+          <li><strong>Safety:</strong> Shock load protection (150% peak torque), fouling scenarios addressed, fail-safe design prevents propeller loss</li>
+          <li><strong>Integration:</strong> Interfaces with existing 2:1 gearbox, 4-cylinder 2L diesel engine, and standard drive shaft arrangement</li>
+          <li><strong>Maintenance:</strong> Sealing designed to prevent bearing contamination in harsh shallow water conditions</li>
+        </ul>
+
+        <h2>Key Constraints</h2>
+        <ul>
+          <li>Must use company-standard blade forgings (non-negotiable, 70% efficiency)</li>
+          <li>Engine limited to 1300 rpm ±2.5% to prevent propeller over-speed inefficiency</li>
+          <li>Hydraulic pressure limited to 200 bar (existing system)</li>
+          <li>Thrust bearing and roller bearing positions fixed (500mm spacing)</li>
+          <li>Drive shaft flange interface predefined</li>
+        </ul>
+
+        <h2>Skills Developed</h2>
+        <ul>
+          <li>Marine propulsion system design</li>
+          <li>Hydraulic mechanism design and actuation force calculations</li>
+          <li>Momentum Theory application for propeller analysis</li>
+          <li>Fatigue and ultimate stress analysis under shock loading</li>
+          <li>Whirling speed calculations for rotating shafts</li>
+          <li>Bearing selection and L10 life calculations</li>
+          <li>Design to strict requirements and non-negotiable constraints</li>
+          <li>Material selection for marine corrosive environments</li>
+          <li>Technical drawing with fits, tolerances (BS8888), and sectional views</li>
+        </ul>
+
+        <h2>Reflection</h2>
+        <p>
+          This project provided invaluable experience designing a complete mechanical system where multiple requirements must coexist—performance, safety, manufacturing, and cost. The challenge of working with fixed blade geometry (non-negotiable company standard) required optimization of other parameters to achieve target speeds. Understanding how off-design and failure cases (fouling scenarios, shock loads) drive design decisions was crucial.
+        </p>
+        <p>
+          The most challenging aspect was balancing hub size (minimize for efficiency) against the need to house the pitch mechanism and withstand extreme loads. Momentum Theory analysis revealed the compromise between ideal propeller area and what's achievable with the constrained blade design. The integration of hydraulic actuation through rotating concentric tubes while maintaining oil/water tight sealing required careful attention to standard components (bearings, seals) and their specifications. Future improvements would explore alternative pitch mechanisms to reduce complexity while maintaining reliability in the harsh marine environment.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      const dropdown = document.getElementById('pagesDropdown');
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = dropdown.classList.contains('active');
+        dropdown.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', !isActive);
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+          dropdown.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Centrifugal Clutch | Cameron McVeigh</title>
+    <title>Cartesian Robot Software Control | Cameron McVeigh</title>
     <style>
       :root {
         font-family: system-ui, Arial, sans-serif;
@@ -208,6 +208,12 @@
         padding-bottom: 8px;
       }
 
+      h3 {
+        font-size: 1.3em;
+        margin: 24px 0 12px 0;
+        color: #444;
+      }
+
       p {
         line-height: 1.7;
         color: #555;
@@ -222,6 +228,52 @@
 
       li {
         margin-bottom: 8px;
+      }
+
+      .highlight-box {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 16px 20px;
+        margin: 24px 0;
+        border-radius: 4px;
+      }
+
+      .highlight-box strong {
+        color: #667eea;
+      }
+
+      .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      @media (min-width: 768px) {
+        .specs-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .spec-item {
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 8px;
+      }
+
+      .spec-item strong {
+        display: block;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        color: #d63384;
       }
     </style>
   </head>
@@ -250,119 +302,98 @@
       </a>
 
       <div class="project-content">
-        <h1>Centrifugal Clutch Design & Build</h1>
-        <p class="project-meta">
-          <strong>Module:</strong> MMME 2044 - Group Design and Make | <strong>Year:</strong> 2023-2024
-        </p>
+        <h1>Drawing Robot Software Control</h1>
+    
 
         <img
-          src="/images/projects/project-2/Clutch1.jpg"
-          alt="Centrifugal Clutch Assembly"
-          style="width:50%; display:block; margin:24px auto; border-radius:12px;"
+          src="/images/projects/Project-4/SP-1.jpg"
+          alt="Drawing Robot System"
+          style="width:60%; display:block; margin:24px auto; border-radius:12px;"
         />
 
         <h2>Project Overview</h2>
         <p>
-          This group project involved designing and manufacturing a centrifugal clutch to transfer torque from a motor to a generator at specific rotational speeds. The design features two internally expanding shoes separated by a helical spring, chosen for manufacturability and efficient torque transfer.
+          This project involved developing software in C to control a Cartesian drawing robot using Arduino. The program reads text input and generates G-code commands to control the robot's three-axis motion, enabling it to draw text characters. The software was developed using VS Code and Arduino IDE, with testing performed using a web-based G-code simulator before deployment to the physical robot.
         </p>
 
         <div class="highlight-box">
-          <strong>Key Achievement:</strong> Successfully designed a clutch that engages at 1200 rpm and transfers 0.966 Nm of torque at 2300 rpm, exceeding the 0.5 Nm requirement.
+          <strong>Key Achievement:</strong> Successfully developed a complete text-to-G-code conversion system with robust error handling, modular code structure, and comprehensive documentation following software engineering best practices.
         </div>
 
-        <h2>Design Challenge</h2>
+        <h2>Technical Requirements</h2>
         <p>
-          The clutch needed to automatically engage at 1200 rpm and transfer at least 0.5 Nm of torque to the generator at 2300 rpm, while fitting within strict dimensional constraints (less than 44mm between plates). The design required balancing centrifugal force, spring tension, and friction characteristics.
+          The software needed to read text from input files, convert characters to coordinate sequences, generate properly formatted G-code commands for three-axis motion, and communicate with the Arduino-controlled robot via serial interface. The code required proper structure with well-named variables, error trapping, and clear documentation for team development.
         </p>
 
         <div class="specs-grid">
           <div class="spec-item">
-            <strong>Engagement Speed</strong>
-            1200 rpm (Fcf = Fspring = 15.1N)
+            <strong>Programming Language</strong>
+            C (embedded systems)
           </div>
           <div class="spec-item">
-            <strong>Operating Speed</strong>
-            2300 rpm generating 0.966 Nm
+            <strong>Development Environment</strong>
+            VS Code and Arduino IDE
           </div>
           <div class="spec-item">
-            <strong>Total Weight</strong>
-            0.272 kg
+            <strong>Output Format</strong>
+            G-code commands for 3-axis motion
           </div>
           <div class="spec-item">
-            <strong>Power Output</strong>
-            232.7 W at operating speed
+            <strong>Testing Platform</strong>
+            Web-based G-code simulator
           </div>
         </div>
 
-        <h2>Design Solution</h2>
+        <h2>Implementation</h2>
         <p>
-          The clutch uses a two-shoe parallel configuration with a single Lee spring (LE 045D 09 S) between them. At 1200 rpm, centrifugal force equals spring force, allowing the shoes to slide outward by 1mm along four restraining pins. The permali-lined shoes then contact the aluminium drum, transferring torque through friction.
+          The software was developed with a modular architecture separating text processing, G-code generation, and serial communication functions. The program structure included custom header files (.h) and implementation files (.c) for different functional components, ensuring maintainability and clear code organization.
         </p>
 
         <h3>Key Components</h3>
         <ul>
-          <li><strong>Shoes:</strong> 3D printed from Nylon 12 with 2mm permali strips for friction (coefficient 0.25 against aluminium)</li>
-          <li><strong>Drum:</strong> Aluminium 6063-T6 with H7/p6 interference fit to drum backplate</li>
-          <li><strong>Shaft:</strong> Aluminium with SKF 6201-2Z bearings separated by 15mm spacer</li>
-          <li><strong>Spring:</strong> Cut from 63.5mm to 54.2mm, extended to 56.6mm operational length</li>
+          <li><strong>Text Parser:</strong> Reads input text files and processes characters for conversion to drawing commands</li>
+          <li><strong>G-code Generator:</strong> Converts character definitions to properly formatted G-code movement commands (G00, G01, etc.)</li>
+          <li><strong>Serial Communication:</strong> Manages communication with Arduino via RS232, including command transmission and response handling</li>
+          <li><strong>Configuration System:</strong> Preprocessor directives (#define) enabling switching between simulator mode and robot testing mode</li>
         </ul>
 
-        <h2>Calculations & Analysis</h2>
-        <p>Extensive calculations validated the design:</p>
-        <ul>
-          <li>Centrifugal force calculations: Fcf = m × k × ω² (where k = radius of gyration = 37.96mm)</li>
-          <li>Spring force matching at 1200 rpm ensuring smooth engagement</li>
-          <li>Torque calculation: T = μr × N × (Fcf - Fs) = 0.966 Nm at 2300 rpm</li>
-          <li>H7/p6 interference fit analysis proving minimum torque capability of 0.923 Nm</li>
-          <li>Shaft minimum diameter of 7mm based on yield stress calculations</li>
-          <li>Bearing load analysis confirming 59.2N << 7280N rated capacity</li>
-        </ul>
-
-        <h2>Manufacturing Approach</h2>
+        <h2>Development Process</h2>
         <p>
-          The design prioritized manufacturability through strategic use of 3D printing and conventional machining. Nylon 12 shoes were 3D printed to achieve precise curved geometry and low mass, while aluminium components were machined on lathes and mills in the university workshop.
+          Development followed a structured planning and implementation approach with comprehensive documentation. The project utilized Git version control for regular commits throughout development, ensuring proper tracking of code evolution and changes from initial planning to final implementation.
         </p>
 
-        <div class="highlight-box">
-          <strong>Manufacturing Innovation:</strong> 3D printing the shoes from Nylon 12 eliminated the difficulty of machining curved aluminium parts while achieving the exact mass needed for proper centrifugal force generation.
-        </div>
+        <h3>Testing Strategy</h3>
+        <ul>
+          <li>Code tested with simulator (<code>https://nraynaud.github.io/webgcode/</code>) by printing G-codes to terminal</li>
+          <li>Validated with different text inputs and font sizes to ensure robustness</li>
+          <li>Used preprocessor directives to switch between simulator and robot modes without code changes</li>
+          <li>Final validation performed on physical robot hardware</li>
+        </ul>
 
-        <h2>Project Photos / Further Design Details:</h2>
-
-        <section class="image-grid">
-          <img
-            src="/images/projects/project-2/Clutch3.jpg"
-            alt="Clutch detail 3"
-          />
-
-          <img
-            src="/images/projects/project-2/Clutch4.jpg"
-            alt="Clutch detail 4"
-          />
-
-          <img
-            src="/images/projects/project-2/Clutch2.jpg"
-            alt="Clutch detail 2"
-          />
-        </section>
+        <h2>Documentation Deliverables</h2>
+        <p>
+          A comprehensive system manual was developed to enable future team development and maintenance. The documentation included detailed descriptions of all custom functions with prototypes, parameter definitions, and return values. Flowcharts illustrated program structure and function call sequences, while test data validated conformance to specifications.
+        </p>
 
         <h2>Skills Developed</h2>
         <ul>
-          <li>Mechanical design for rotating systems</li>
-          <li>Centrifugal force and spring mechanics calculations</li>
-          <li>Interference fit analysis and tolerance specification (H7/p6, H7/g6)</li>
-          <li>Material selection for friction applications</li>
-          <li>Hybrid manufacturing (3D printing + conventional machining)</li>
-          <li>SolidWorks CAD and technical drawing to BS8888</li>
-          <li>Group project management and task allocation</li>
+          <li>C programming for embedded systems and Arduino</li>
+          <li>G-code generation and CNC machine communication protocols</li>
+          <li>Modular software design with separate .c and .h files</li>
+          <li>Serial communication and RS232 interfacing</li>
+          <li>Preprocessor directives for conditional compilation</li>
+          <li>Version control using Git for software development</li>
+          <li>Technical documentation and system manual creation</li>
+          <li>Software testing and validation methodologies</li>
+          <li>Debugging tools and simulation-based verification</li>
         </ul>
 
         <h2>Reflection</h2>
         <p>
-          This project provided valuable experience in designing automatic mechanical systems where multiple forces must balance precisely. The single-spring design simplified calculations and manufacturing compared to multi-spring alternatives, demonstrating how design decisions can improve both analysis and fabrication.
+          This project provided valuable experience in developing embedded software following professional engineering practices. The challenge of translating text to robot motion required careful consideration of coordinate systems and movement sequences. Using version control throughout development reinforced good software engineering habits, while the comprehensive documentation requirements highlighted the importance of clear technical communication for team-based projects.
         </p>
         <p>
-          Key challenges included achieving the exact shoe mass through iterative design and selecting spring dimensions to match centrifugal forces at the engagement speed. The use of 3D printing for complex geometries proved essential, as machining the curved shoes from aluminium would have been extremely difficult and time-consuming while potentially being too heavy for the required performance.
+          The most valuable aspect was learning to design software that could be easily tested and validated before deployment to hardware. The preprocessor directive approach allowing seamless switching between simulator and robot modes demonstrated the power of conditional compilation for embedded development. The experience of documenting functions, data structures, and testing strategies proved essential for creating maintainable, professional-quality code.
         </p>
       </div>
     </main>
