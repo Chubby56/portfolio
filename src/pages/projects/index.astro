@@ -279,6 +279,35 @@
         color: var(--graphite);
       }
 
+      /* Placeholder cards for projects not yet written up */
+      .card.placeholder {
+        border-style: dashed;
+        border-color: var(--line-strong);
+        background: transparent;
+      }
+
+      .card.placeholder:hover,
+      .card.placeholder:focus-visible {
+        border-color: var(--steel);
+      }
+
+      .card.placeholder .card-body h2,
+      .card.placeholder .card-body p {
+        color: var(--graphite);
+      }
+
+      .placeholder-thumb {
+        background: transparent;
+        border-bottom-style: dashed;
+        border-bottom-color: var(--line-strong);
+      }
+
+      .placeholder-mark {
+        font-family: var(--font-display);
+        font-size: 2.2em;
+        color: var(--line-strong);
+      }
+
       /* ── Footer ── */
       footer {
         margin-top: 68px;
@@ -350,10 +379,10 @@
             <line x1="129" y1="3" x2="129" y2="13" stroke="#B6AF9E" stroke-width="1"/>
           </svg>
         </div>
-        <p>A selection of design, build and control work from free time, degree and placement.</p>
+        <p>A selection of design, build and control work from my degree and placement.</p>
       </section>
 
-      <div class="grid-meta">4 projects</div>
+      <div class="grid-meta">6 projects</div>
 
       <section class="grid">
         <!-- Project 1 -->
@@ -413,6 +442,28 @@
           <div class="card-body">
             <h2>Control of Cartesian Robot</h2>
             <p>Designing and implementing software to control a Cartesian robot.</p>
+          </div>
+        </a>
+
+        <!-- Project 5 — TODO: fill in title, link, image and description -->
+        <a class="card placeholder" href="/projects/project-5/">
+          <div class="thumb-wrap placeholder-thumb">
+            <span class="placeholder-mark" aria-hidden="true">+</span>
+          </div>
+          <div class="card-body">
+            <h2>[Project title]</h2>
+            <p>[One or two lines describing the project.]</p>
+          </div>
+        </a>
+
+        <!-- Project 6 — TODO: fill in title, link, image and description -->
+        <a class="card placeholder" href="/projects/project-6/">
+          <div class="thumb-wrap placeholder-thumb">
+            <span class="placeholder-mark" aria-hidden="true">+</span>
+          </div>
+          <div class="card-body">
+            <h2>[Project title]</h2>
+            <p>[One or two lines describing the project.]</p>
           </div>
         </a>
       </section>
