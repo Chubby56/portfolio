@@ -4,147 +4,221 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Projects | Cameron McVeigh</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
       :root {
-        font-family: system-ui, Arial, sans-serif;
+        --paper: #F1F0EB;
+        --paper-raised: #FCFBF8;
+        --panel: #E9E6DC;
+        --ink: #1C2128;
+        --graphite: #5B6169;
+        --line: #D6D1C4;
+        --line-strong: #B6AF9E;
+        --steel: #3E5A6B;
+        --redline: #A83B2E;
+        --font-display: 'Space Grotesk', system-ui, sans-serif;
+        --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+        --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
       }
+
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        position: relative;
+      }
+
+      /* Faint drafting-paper grid, matching the rest of the site */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          repeating-linear-gradient(to right, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px),
+          repeating-linear-gradient(to bottom, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px);
       }
 
       main {
-        max-width: 1200px;
+        max-width: 1120px;
         margin: 0 auto;
-        padding: 48px 20px;
+        padding: 28px 24px 72px;
+        position: relative;
+        z-index: 1;
       }
 
-      /* Navigation Styles */
-      nav { 
-        display: flex; 
+      a { color: inherit; }
+
+      :focus-visible {
+        outline: 2px solid var(--steel);
+        outline-offset: 3px;
+      }
+
+      /* ── Navigation ── */
+      .site-nav {
+        display: flex;
         align-items: center;
-        gap: 16px; 
-        margin-bottom: 32px; 
-        position: relative;
+        gap: 16px;
+        padding-bottom: 18px;
+        margin-bottom: 48px;
+        border-bottom: 1px solid var(--line);
       }
-      
-      /* Dropdown Container */
-      .dropdown {
-        position: relative;
-        display: inline-block;
+
+      .nav-wordmark {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
       }
-      
+
+      .nav-spacer { flex: 1; }
+
+      .nav-links {
+        display: none;
+        gap: 28px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        color: var(--graphite);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible { color: var(--ink); border-bottom-color: var(--line-strong); }
+
+      .nav-links a[aria-current="page"] {
+        color: var(--ink);
+        border-bottom-color: var(--redline);
+      }
+
+      @media (min-width: 640px) {
+        .nav-links { display: flex; }
+      }
+
+      .dropdown { position: relative; }
+
       .dropdown-toggle {
         background: none;
-        border: 1px solid #ddd;
-        padding: 10px 12px;
+        border: 1px solid var(--line-strong);
+        padding: 9px 11px;
         border-radius: 6px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.2s, border-color 0.2s;
+        transition: background-color 0.15s, border-color 0.15s;
       }
-      
-      .dropdown-toggle:hover {
-        background-color: #f9f9f9;
-        border-color: #999;
-      }
-      
-      /* Hamburger Icon */
+
+      .dropdown-toggle:hover { background-color: var(--panel); }
+
       .hamburger {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        width: 20px;
+        width: 16px;
       }
-      
+
       .hamburger span {
         display: block;
         width: 100%;
-        height: 2px;
-        background-color: #333;
-        border-radius: 2px;
+        height: 1.5px;
+        background-color: var(--graphite);
         transition: transform 0.2s, opacity 0.2s;
       }
-      
-      .dropdown.active .hamburger span:nth-child(1) {
-        transform: translateY(6px) rotate(45deg);
-      }
-      
-      .dropdown.active .hamburger span:nth-child(2) {
-        opacity: 0;
-      }
-      
-      .dropdown.active .hamburger span:nth-child(3) {
-        transform: translateY(-6px) rotate(-45deg);
-      }
-      
-      /* Dropdown Menu */
+
+      .dropdown.active .hamburger span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+      .dropdown.active .hamburger span:nth-child(2) { opacity: 0; }
+      .dropdown.active .hamburger span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
       .dropdown-menu {
         position: absolute;
         top: calc(100% + 8px);
         left: 0;
-        background: white;
-        border: 1px solid #ddd;
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(28,33,40,0.10);
         min-width: 160px;
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-8px);
+        transform: translateY(-6px);
         transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-        z-index: 1000;
+        z-index: 20;
       }
-      
+
       .dropdown.active .dropdown-menu {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
-      
+
       .dropdown-menu a {
         display: block;
-        padding: 12px 16px;
-        color: inherit;
+        padding: 11px 16px;
+        color: var(--ink);
         text-decoration: none;
-        transition: background-color 0.2s;
-      }
-      
-      .dropdown-menu a:first-child {
-        border-radius: 8px 8px 0 0;
-      }
-      
-      .dropdown-menu a:last-child {
-        border-radius: 0 0 8px 8px;
-      }
-      
-      .dropdown-menu a:hover {
-        background-color: #f5f5f5;
+        font-size: 14px;
       }
 
+      .dropdown-menu a:hover { background-color: var(--panel); }
+
+      .dropdown-menu a[aria-current="page"] {
+        color: var(--redline);
+        font-weight: 500;
+      }
+
+      /* ── Page header ── */
       .page-header {
-        text-align: center;
-        margin-bottom: 48px;
+        margin-bottom: 40px;
       }
 
-      h1 {
-        font-size: 2.5em;
-        margin: 0 0 16px 0;
+      .page-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2em, 5vw, 2.7em);
+        font-weight: 700;
+        margin: 0;
+        color: var(--ink);
+        line-height: 1.1;
       }
+
+      .page-dimension { margin: 14px 0 20px; }
 
       .page-header p {
-        font-size: 1.1em;
-        margin: 8px 0;
-        color: #555;
+        font-size: 1.05em;
+        line-height: 1.6;
+        color: var(--graphite);
+        max-width: 56ch;
+        margin: 0;
       }
 
+      /* ── Grid meta rule ── */
+      .grid-meta {
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: 14px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+        color: var(--graphite);
+      }
+
+      /* ── Projects grid ── */
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 32px;
-        margin-top: 32px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 22px;
       }
 
       .card {
@@ -152,28 +226,38 @@
         flex-direction: column;
         text-decoration: none;
         color: inherit;
-        border: 1px solid #ddd;
-        border-radius: 16px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
         overflow: hidden;
-        background: #fff;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        background: var(--paper-raised);
+        transition: border-color 0.2s;
       }
 
-      .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      .card:hover,
+      .card:focus-visible {
+        border-color: var(--redline);
+      }
+
+      .thumb-wrap {
+        width: 100%;
+        height: 180px;
+        background: var(--panel);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
       }
 
       .thumb {
         width: 100%;
-        height: 180px;
+        height: 100%;
         object-fit: contain;
-        background: #f6f6f6;
         padding: 16px;
       }
 
       .card-body {
-        padding: 16px;
+        padding: 18px 20px 20px;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -182,20 +266,56 @@
 
       .card-body h2 {
         margin: 0;
-        font-size: 1.1rem;
+        font-family: var(--font-display);
+        font-size: 1.05em;
+        font-weight: 600;
+        color: var(--ink);
       }
 
       .card-body p {
         margin: 0;
-        font-size: 0.95rem;
-        color: #444;
+        font-size: 0.9em;
+        line-height: 1.55;
+        color: var(--graphite);
+      }
+
+      /* ── Footer ── */
+      footer {
+        margin-top: 68px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      footer .footer-left {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--graphite);
+      }
+
+      footer .footer-links { display: flex; gap: 22px; }
+
+      footer .footer-links a {
+        font-size: 13px;
+        color: var(--graphite);
+        text-decoration: none;
+      }
+
+      footer .footer-links a:hover { color: var(--ink); }
+
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
       }
     </style>
   </head>
 
   <body>
     <main>
-      <nav>
+      <nav class="site-nav">
         <div class="dropdown" id="pagesDropdown">
           <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
             <span class="hamburger">
@@ -206,103 +326,136 @@
           </button>
           <div class="dropdown-menu" role="menu">
             <a href="/" role="menuitem">Home</a>
-            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/projects/" role="menuitem" aria-current="page">Projects</a>
             <a href="/about/" role="menuitem">About</a>
             <a href="/contact/" role="menuitem">Contact</a>
           </div>
         </div>
+        <a href="/" class="nav-wordmark">Cameron McVeigh</a>
+        <div class="nav-spacer"></div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/projects/" aria-current="page">Projects</a>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
       </nav>
 
-      <div class="page-header">
+      <section class="page-header">
         <h1>Projects</h1>
-        <p>Take a look at some of my projects below:</p>
-      </div>
+        <div class="page-dimension" aria-hidden="true">
+          <svg width="130" height="16" viewBox="0 0 130 16" fill="none">
+            <line x1="1" y1="8" x2="129" y2="8" stroke="#B6AF9E" stroke-width="1"/>
+            <line x1="1" y1="3" x2="1" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+            <line x1="129" y1="3" x2="129" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+          </svg>
+        </div>
+        <p>A selection of design, build and control work from free time, degree and placement.</p>
+      </section>
+
+      <div class="grid-meta">4 projects</div>
 
       <section class="grid">
         <!-- Project 1 -->
         <a class="card" href="/projects/project-1/">
-          <img
-            class="thumb"
-            src="/images/projects/project-1/Image-1.svg"
-            alt="Air/oil separator diagram"
-          />
+          <div class="thumb-wrap">
+            <img
+              class="thumb"
+              src="/images/projects/project-1/Image-1.svg"
+              alt="Air/oil separator diagram"
+            />
+          </div>
           <div class="card-body">
             <h2>Air/Oil Separator</h2>
-            <p>
-              Design and build of a cylonic Air/Oil separator in collaboration with Rolls-Royce UTC
-            </p>
+            <p>Design and build of a cyclonic air/oil separator, in collaboration with Rolls-Royce UTC.</p>
           </div>
         </a>
 
         <!-- Project 2 -->
         <a class="card" href="/projects/project-2/">
-          <img
-            class="thumb"
-            src="/images/projects/project-2/Clutch1.jpg"
-            alt="Centrifugal clutch diagram"
-          />
+          <div class="thumb-wrap">
+            <img
+              class="thumb"
+              src="/images/projects/project-2/Clutch1.jpg"
+              alt="Centrifugal clutch diagram"
+            />
+          </div>
           <div class="card-body">
-            <h2>Centrifugal clutch</h2>
-            <p>Design and build of a centrifugal clutch</p>
+            <h2>Centrifugal Clutch</h2>
+            <p>Design and build of a centrifugal clutch.</p>
           </div>
         </a>
 
-        <!-- Project 3  -->
+        <!-- Project 3 -->
         <a class="card" href="/projects/project-3/">
-          <img
-            class="thumb"
-            src="/images/projects/project-3/vpp-3.jpg"
-            alt="Vpp diagram"
-          />
+          <div class="thumb-wrap">
+            <img
+              class="thumb"
+              src="/images/projects/project-3/vpp-3.jpg"
+              alt="Variable pitch propeller diagram"
+            />
+          </div>
           <div class="card-body">
-            <h2>Variable pitch propeller</h2>
-            <p>Concept Design of a variable pitch propeller following a strict set of design requirements</p>
+            <h2>Variable Pitch Propeller</h2>
+            <p>Concept design of a variable pitch propeller, following a strict set of design requirements.</p>
           </div>
         </a>
 
         <!-- Project 4 -->
         <a class="card" href="/projects/project-4/">
-          <img
-            class="thumb"
-            src="/images/projects/Project-4/SP-1.jpg"
-            alt="Project 4"
-          />
+          <div class="thumb-wrap">
+            <img
+              class="thumb"
+              src="/images/projects/Project-4/SP-1.jpg"
+              alt="Cartesian robot control diagram"
+            />
+          </div>
           <div class="card-body">
-            <h2>Control of cartesian robot</h2>
-            <p>Designing and implementing software to control a cartesian robot</p>
+            <h2>Control of Cartesian Robot</h2>
+            <p>Designing and implementing software to control a Cartesian robot.</p>
           </div>
         </a>
       </section>
+
+      <footer>
+        <span class="footer-left">© 2025 Cameron McVeigh</span>
+        <div class="footer-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </footer>
     </main>
 
     <script>
-      const dropdown = document.getElementById('pagesDropdown');
-      const toggle = dropdown.querySelector('.dropdown-toggle');
-      
-      // Toggle dropdown on click
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isActive = dropdown.classList.contains('active');
-        dropdown.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', !isActive);
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-      
-      // Close dropdown on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.focus();
-        }
-      });
+      (function () {
+        const dropdown = document.getElementById('pagesDropdown');
+        const toggle = dropdown ? dropdown.querySelector<HTMLElement>('.dropdown-toggle') : null;
+
+        if (!dropdown || !toggle) return;
+
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = dropdown.classList.contains('active');
+          dropdown.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', String(!isActive));
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target as Node)) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.focus();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
