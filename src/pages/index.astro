@@ -4,353 +4,399 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cameron McVeigh | Engineering Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-      :root { font-family: system-ui, Arial, sans-serif; }
- 
-      /* ── CHANGE: warm off-white page background instead of plain white ── */
-      body { margin: 0; padding: 0; background: #f8f7f5; color: #1a1a1a; }
- 
-      main { max-width: 900px; margin: 0 auto; padding: 32px 20px 64px; }
- 
-      /* ── Navigation ── */
-      nav {
+      :root {
+        --paper: #F1F0EB;
+        --paper-raised: #FCFBF8;
+        --panel: #E9E6DC;
+        --ink: #1C2128;
+        --graphite: #5B6169;
+        --line: #D6D1C4;
+        --line-strong: #B6AF9E;
+        --steel: #3E5A6B;
+        --redline: #A83B2E;
+        --font-display: 'Space Grotesk', system-ui, sans-serif;
+        --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+        --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        position: relative;
+      }
+
+      /* Faint drafting-paper grid, grounded in the subject: engineering drawing sheets */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          repeating-linear-gradient(to right, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px),
+          repeating-linear-gradient(to bottom, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 28px 24px 72px;
+        position: relative;
+        z-index: 1;
+      }
+
+      a { color: inherit; }
+
+      :focus-visible {
+        outline: 2px solid var(--steel);
+        outline-offset: 3px;
+      }
+
+      /* ── Navigation: styled as a sheet header strip ── */
+      .site-nav {
         display: flex;
         align-items: center;
-        gap: 14px;
-        margin-bottom: 48px;
+        gap: 16px;
+        padding-bottom: 18px;
+        margin-bottom: 44px;
+        border-bottom: 1px solid var(--line);
       }
- 
-      /* ── CHANGE: name brand added beside hamburger ── */
-      .nav-brand {
+
+      .nav-wordmark {
+        font-family: var(--font-display);
         font-size: 15px;
-        font-weight: 500;
-        color: #1a1a1a;
-        letter-spacing: 0.01em;
+        font-weight: 600;
+        color: var(--ink);
       }
- 
+
       .nav-spacer { flex: 1; }
- 
-      /* ── CHANGE: inline nav links shown on wider screens ── */
+
       .nav-links {
-        display: flex;
-        gap: 24px;
+        display: none;
+        gap: 28px;
       }
- 
+
       .nav-links a {
         font-size: 14px;
-        color: #666;
+        color: var(--graphite);
         text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
       }
- 
-      .nav-links a:hover { color: #1a1a1a; }
- 
-      /* Dropdown Container */
-      .dropdown {
-        position: relative;
-        display: inline-block;
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible { color: var(--ink); border-bottom-color: var(--line-strong); }
+
+      @media (min-width: 640px) {
+        .nav-links { display: flex; }
       }
- 
+
+      .dropdown { position: relative; }
+
       .dropdown-toggle {
         background: none;
-        border: 0.5px solid #ddd;
+        border: 1px solid var(--line-strong);
         padding: 9px 11px;
-        border-radius: 8px;
+        border-radius: 6px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.2s, border-color 0.2s;
+        transition: background-color 0.15s, border-color 0.15s;
       }
- 
-      .dropdown-toggle:hover {
-        background-color: #f2f0ed;
-        border-color: #bbb;
-      }
- 
+
+      .dropdown-toggle:hover { background-color: var(--panel); }
+
       .hamburger {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        width: 18px;
+        width: 16px;
       }
- 
+
       .hamburger span {
         display: block;
         width: 100%;
         height: 1.5px;
-        background-color: #555;
-        border-radius: 2px;
+        background-color: var(--graphite);
         transition: transform 0.2s, opacity 0.2s;
       }
- 
+
       .dropdown.active .hamburger span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
       .dropdown.active .hamburger span:nth-child(2) { opacity: 0; }
       .dropdown.active .hamburger span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
- 
+
       .dropdown-menu {
         position: absolute;
         top: calc(100% + 8px);
         left: 0;
-        background: white;
-        border: 0.5px solid #e0ddd8;
-        border-radius: 10px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 6px 20px rgba(28,33,40,0.10);
         min-width: 160px;
         opacity: 0;
         visibility: hidden;
         transform: translateY(-6px);
         transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-        z-index: 1000;
+        z-index: 20;
       }
- 
+
       .dropdown.active .dropdown-menu {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
- 
+
       .dropdown-menu a {
         display: block;
         padding: 11px 16px;
-        color: #333;
+        color: var(--ink);
         text-decoration: none;
-        font-size: 0.9em;
-        transition: background-color 0.15s;
+        font-size: 14px;
       }
- 
-      .dropdown-menu a:first-child { border-radius: 10px 10px 0 0; }
-      .dropdown-menu a:last-child  { border-radius: 0 0 10px 10px; }
-      .dropdown-menu a:hover { background-color: #f5f3f0; }
- 
-      /* ── CHANGE: Hero on a white card with avatar and accent underline ── */
+
+      .dropdown-menu a:hover { background-color: var(--panel); }
+
+      /* ── Hero ── */
       .hero {
-        text-align: center;
-        margin-bottom: 56px;
-        padding: 48px 24px 40px;
-        background: white;
-        border-radius: 16px;
-        border: 0.5px solid #e8e5e0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-bottom: 64px;
       }
- 
-      /* ── CHANGE: monogram avatar circle ── */
-      .hero-avatar {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background: #1a1a1a;
-        color: white;
-        font-size: 22px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-        letter-spacing: 0.02em;
+
+      @media (min-width: 760px) {
+        .hero { grid-template-columns: 1.4fr 1fr; align-items: start; }
       }
- 
+
       .hero h1 {
-        font-size: 2.2em;
-        font-weight: 600;
-        margin: 0 0 4px 0;
-        color: #1a1a1a;
-        display: inline-block;
-        position: relative;
+        font-family: var(--font-display);
+        font-size: clamp(2.1em, 5vw, 2.9em);
+        font-weight: 700;
+        margin: 0;
+        color: var(--ink);
+        line-height: 1.1;
       }
- 
-      /* ── CHANGE: gold accent underline on name ── */
-      .hero h1::after {
-        content: '';
-        display: block;
-        width: 48px;
-        height: 3px;
-        background: #c8a96e;
-        border-radius: 2px;
-        margin: 8px auto 0;
+
+      .hero-dimension {
+        margin: 14px 0 22px;
       }
- 
-      .hero .role {
-        font-size: 1.05em;
-        color: #555;
-        margin-top: 16px;
-        margin-bottom: 4px;
+
+      .hero-intro {
+        font-size: 1.08em;
+        line-height: 1.6;
+        color: var(--graphite);
+        max-width: 46ch;
+        margin: 0 0 22px;
       }
- 
-      .hero .tagline {
-        font-size: 0.95em;
-        color: #999;
+
+      .hero-intro strong {
+        color: var(--ink);
+        font-weight: 500;
       }
- 
-      .about-link { margin-top: 20px; }
- 
+
       .about-link a {
-        color: #1a1a1a;
+        color: var(--ink);
         text-decoration: none;
-        font-size: 0.9em;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 1px;
+        font-size: 0.95em;
+        border-bottom: 1px solid var(--line-strong);
+        padding-bottom: 2px;
       }
- 
-      .about-link a:hover { border-color: #1a1a1a; }
- 
-      /* ── Projects Section ── */
-      .projects-section { margin-top: 8px; }
- 
-      /* ── CHANGE: left rule accent on section heading ── */
+
+      .about-link a:hover { border-color: var(--ink); }
+
+      /* Spec panel: a small title block, echoing a drawing sheet's corner stamp */
+      .spec-panel {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--paper-raised);
+        overflow: hidden;
+      }
+
+      .spec-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.9em;
+      }
+
+      .spec-row:last-child { border-bottom: none; }
+
+      .spec-label {
+        color: var(--graphite);
+        font-family: var(--font-mono);
+        font-size: 0.92em;
+      }
+
+      .spec-value {
+        color: var(--ink);
+        font-weight: 500;
+        text-align: right;
+      }
+
+      /* ── Projects section ── */
       .section-header {
         display: flex;
-        align-items: center;
-        gap: 12px;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 14px;
         margin-bottom: 28px;
+        border-bottom: 1px solid var(--line);
       }
- 
-      .section-rule {
-        width: 4px;
-        height: 28px;
-        background: #1a1a1a;
-        border-radius: 2px;
-        flex-shrink: 0;
-      }
- 
+
       .section-header h2 {
-        font-size: 1.6em;
+        font-family: var(--font-display);
+        font-size: 1.5em;
         font-weight: 600;
-        color: #1a1a1a;
+        color: var(--ink);
         margin: 0;
       }
- 
+
+      .section-meta {
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+        color: var(--graphite);
+        white-space: nowrap;
+      }
+
       .projects-grid {
         display: grid;
         grid-template-columns: 1fr;
         gap: 20px;
-        margin-bottom: 28px;
+        margin-bottom: 32px;
       }
- 
-      @media (min-width: 600px) {
+
+      @media (min-width: 620px) {
         .projects-grid { grid-template-columns: repeat(2, 1fr); }
       }
- 
-      @media (min-width: 900px) {
+
+      @media (min-width: 920px) {
         .projects-grid { grid-template-columns: repeat(3, 1fr); }
       }
- 
-      /* ── CHANGE: white cards on warm bg, coloured top accent per card ── */
+
       .project-card {
-        border: 0.5px solid #e8e5e0;
-        border-radius: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
         overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s;
-        background: white;
+        background: var(--paper-raised);
         text-decoration: none;
         color: inherit;
         display: block;
+        transition: border-color 0.2s;
       }
- 
-      .project-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+
+      .project-card:hover,
+      .project-card:focus-visible {
+        border-color: var(--redline);
       }
- 
-      /* ── CHANGE: coloured accent stripe at top of each card ── */
-      .card-accent { height: 4px; }
-      .card-accent.blue  { background: #b5c9e8; }
-      .card-accent.gold  { background: #c8a96e; }
-      .card-accent.teal  { background: #9fcec0; }
- 
+
       .project-image {
         width: 100%;
-        height: 180px;
-        background: #f5f4f2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        height: 170px;
+        background: var(--panel);
         overflow: hidden;
+        border-bottom: 1px solid var(--line);
       }
- 
+
       .project-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
       }
- 
+
+      .project-card:hover .project-image img { transform: scale(1.04); }
+
       .project-card:first-child .project-image img { object-position: center top; }
- 
+
       .project-content { padding: 18px 20px 20px; }
- 
+
       .project-content h3 {
-        margin: 0 0 10px 0;
-        font-size: 1.05em;
+        margin: 0 0 8px 0;
+        font-family: var(--font-display);
+        font-size: 1.08em;
         font-weight: 600;
-        color: #1a1a1a;
+        color: var(--ink);
       }
- 
+
       .project-content p {
         margin: 0 0 14px 0;
-        color: #666;
+        color: var(--graphite);
         line-height: 1.55;
-        font-size: 0.88em;
+        font-size: 0.9em;
       }
- 
-      .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
- 
-      /* ── CHANGE: colour-coded tags per project ── */
-      .tag {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 0.78em;
-        font-weight: 500;
+
+      .project-specs {
+        font-family: var(--font-mono);
+        font-size: 0.8em;
+        color: var(--steel);
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
       }
- 
-      .tag.blue { background: #e8eef5; color: #2c5282; }
-      .tag.gold { background: #faf3e6; color: #7a5a1e; }
-      .tag.teal { background: #e8f4f1; color: #1d5c50; }
- 
-      /* ── CHANGE: darker, more solid CTA button ── */
-      .view-all { text-align: center; margin-top: 8px; }
- 
+
+      .view-all { text-align: center; margin-top: 4px; }
+
       .view-all-link {
         display: inline-block;
-        padding: 12px 36px;
-        background: #1a1a1a;
-        color: white;
+        color: var(--ink);
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 500;
-        font-size: 0.9em;
-        letter-spacing: 0.02em;
-        transition: background-color 0.2s;
+        font-size: 0.95em;
+        border-bottom: 1px solid var(--line-strong);
+        padding-bottom: 2px;
       }
- 
-      .view-all-link:hover { background: #333; }
- 
-      /* ── CHANGE: footer added ── */
+
+      .view-all-link:hover { border-color: var(--ink); }
+
+      /* ── Footer ── */
       footer {
-        margin-top: 64px;
-        padding-top: 28px;
-        border-top: 0.5px solid #e0ddd8;
+        margin-top: 68px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 12px;
       }
- 
-      footer .footer-left { font-size: 13px; color: #999; }
- 
-      footer .footer-links { display: flex; gap: 20px; }
- 
+
+      footer .footer-left {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--graphite);
+      }
+
+      footer .footer-links { display: flex; gap: 22px; }
+
       footer .footer-links a {
         font-size: 13px;
-        color: #666;
+        color: var(--graphite);
         text-decoration: none;
       }
- 
-      footer .footer-links a:hover { color: #1a1a1a; }
+
+      footer .footer-links a:hover { color: var(--ink); }
+
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <nav>
+      <nav class="site-nav">
         <div class="dropdown" id="pagesDropdown">
           <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
             <span class="hamburger">
@@ -366,93 +412,96 @@
             <a href="/contact/" role="menuitem">Contact</a>
           </div>
         </div>
-        <!-- CHANGE: name brand beside hamburger -->
-        <span class="nav-brand">Cameron McVeigh</span>
+        <span class="nav-wordmark">Cameron McVeigh</span>
         <div class="nav-spacer"></div>
-        <!-- CHANGE: inline nav links -->
-        <nav class="nav-links" aria-label="Main navigation">
+        <div class="nav-links">
           <a href="/">Home</a>
           <a href="/projects/">Projects</a>
           <a href="/about/">About</a>
           <a href="/contact/">Contact</a>
-        </nav>
-      </nav>
- 
-      <!-- CHANGE: hero on white card with avatar -->
-      <section class="hero">
-        <div class="hero-avatar" aria-hidden="true">CM</div>
-        <h1>Cameron McVeigh</h1>
-        <p class="role">MEng Mechanical Engineering · Robotics Engineer</p>
-        <p class="tagline">Dedicated to providing high quality engineering solutions</p>
-        <p class="about-link"><a href="/about/">Learn more about me →</a></p>
-      </section>
- 
-      <section class="projects-section">
-        <!-- CHANGE: section heading with left rule -->
-        <div class="section-header">
-          <div class="section-rule"></div>
-          <h2>Featured Projects</h2>
         </div>
- 
+      </nav>
+
+      <section class="hero">
+        <div>
+          <h1>Cameron McVeigh</h1>
+          <div class="hero-dimension" aria-hidden="true">
+            <svg width="130" height="16" viewBox="0 0 130 16" fill="none">
+              <line x1="1" y1="8" x2="129" y2="8" stroke="#B6AF9E" stroke-width="1"/>
+              <line x1="1" y1="3" x2="1" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+              <line x1="129" y1="3" x2="129" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+            </svg>
+          </div>
+          <p class="hero-intro">
+            An <strong>MEng Mechanical Engineering</strong> graduate working in <strong>robotics</strong>.
+            I design, build and test mechanical systems — from a concept sketch, through CAD and analysis,
+            to a working prototype on the bench.
+          </p>
+          <p class="about-link"><a href="/about/">More about me</a></p>
+        </div>
+
+        <div class="spec-panel">
+          <div class="spec-row">
+            <span class="spec-label">Discipline</span>
+            <span class="spec-value">Mechanical Engineering, MEng</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Focus</span>
+            <span class="spec-value">Robotics &amp; mechanisms</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Portfolio</span>
+            <span class="spec-value">3 featured projects</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="projects-section">
+        <div class="section-header">
+          <h2>Featured projects</h2>
+          <span class="section-meta">3 selected</span>
+        </div>
+
         <div class="projects-grid">
-          <!-- CHANGE: blue accent stripe + blue tags -->
           <a href="/projects/project-1/" class="project-card">
-            <div class="card-accent blue"></div>
             <div class="project-image">
               <img src="/images/projects/project-1/Image-1.svg" alt="Air/Oil Separator" />
             </div>
             <div class="project-content">
               <h3>Air/Oil Separator</h3>
-              <p>Design and build of a cyclonic Air/Oil separator in collaboration with Rolls-Royce UTC.</p>
-              <div class="project-tags">
-                <span class="tag blue">CAD</span>
-                <span class="tag blue">Manufacturing</span>
-                <span class="tag blue">Testing</span>
-              </div>
+              <p>Design and build of a cyclonic air/oil separator, in collaboration with Rolls-Royce UTC.</p>
+              <div class="project-specs">CAD, manufacturing, testing</div>
             </div>
           </a>
- 
-          <!-- CHANGE: gold accent stripe + gold tags -->
+
           <a href="/projects/project-2/" class="project-card">
-            <div class="card-accent gold"></div>
             <div class="project-image">
               <img src="/images/projects/project-2/Clutch1.jpg" alt="Centrifugal Clutch" />
             </div>
             <div class="project-content">
               <h3>Centrifugal Clutch</h3>
-              <p>Design and build of a centrifugal clutch with detailed mechanical analysis and prototype testing.</p>
-              <div class="project-tags">
-                <span class="tag gold">CAD</span>
-                <span class="tag gold">Design</span>
-                <span class="tag gold">Prototyping</span>
-              </div>
+              <p>Design and build of a centrifugal clutch, with detailed mechanical analysis and prototype testing.</p>
+              <div class="project-specs">CAD, design, prototyping</div>
             </div>
           </a>
- 
-          <!-- CHANGE: teal accent stripe + teal tags -->
+
           <a href="/projects/project-3/" class="project-card">
-            <div class="card-accent teal"></div>
             <div class="project-image">
               <img src="/images/projects/project-3/vpp-3.jpg" alt="Variable Pitch Propeller" />
             </div>
             <div class="project-content">
               <h3>Variable Pitch Propeller</h3>
-              <p>Concept design of a variable pitch propeller following a strict set of design requirements.</p>
-              <div class="project-tags">
-                <span class="tag teal">CAD</span>
-                <span class="tag teal">Analysis</span>
-                <span class="tag teal">Design</span>
-              </div>
+              <p>Concept design of a variable pitch propeller, following a strict set of design requirements.</p>
+              <div class="project-specs">CAD, analysis, design</div>
             </div>
           </a>
         </div>
- 
+
         <div class="view-all">
-          <a href="/projects/" class="view-all-link">View all projects →</a>
+          <a href="/projects/" class="view-all-link">View all projects</a>
         </div>
       </section>
- 
-      <!-- CHANGE: footer added -->
+
       <footer>
         <span class="footer-left">© 2025 Cameron McVeigh</span>
         <div class="footer-links">
@@ -462,33 +511,36 @@
         </div>
       </footer>
     </main>
- 
+
     <script>
-      const dropdown = document.getElementById('pagesDropdown');
-      const toggle = dropdown.querySelector('.dropdown-toggle');
- 
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isActive = dropdown.classList.contains('active');
-        dropdown.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', !isActive);
-      });
- 
-      document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
- 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.focus();
-        }
-      });
+      (function () {
+        const dropdown = document.getElementById('pagesDropdown');
+        const toggle = dropdown ? dropdown.querySelector<HTMLElement>('.dropdown-toggle') : null;
+
+        if (!dropdown || !toggle) return;
+
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = dropdown.classList.contains('active');
+          dropdown.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', String(!isActive));
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target as Node)) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.focus();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
- 
