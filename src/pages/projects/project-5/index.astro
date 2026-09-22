@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shoddy Cameron | Cameron McVeigh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --paper: #F1F0EB;
+        --paper-raised: #FCFBF8;
+        --panel: #E9E6DC;
+        --ink: #1C2128;
+        --graphite: #5B6169;
+        --line: #D6D1C4;
+        --line-strong: #B6AF9E;
+        --steel: #3E5A6B;
+        --redline: #A83B2E;
+        --font-display: 'Space Grotesk', system-ui, sans-serif;
+        --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+        --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          repeating-linear-gradient(to right, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px),
+          repeating-linear-gradient(to bottom, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px);
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 28px 24px 72px;
+        position: relative;
+        z-index: 1;
+      }
+
+      a { color: inherit; }
+
+      :focus-visible {
+        outline: 2px solid var(--steel);
+        outline-offset: 3px;
+      }
+
+      /* ── Navigation ── */
+      .site-nav {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 18px;
+        margin-bottom: 36px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-wordmark {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .nav-spacer { flex: 1; }
+
+      .nav-links { display: none; gap: 28px; }
+
+      .nav-links a {
+        font-size: 14px;
+        color: var(--graphite);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible { color: var(--ink); border-bottom-color: var(--line-strong); }
+
+      @media (min-width: 640px) {
+        .nav-links { display: flex; }
+      }
+
+      .dropdown { position: relative; }
+
+      .dropdown-toggle {
+        background: none;
+        border: 1px solid var(--line-strong);
+        padding: 9px 11px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.15s, border-color 0.15s;
+      }
+
+      .dropdown-toggle:hover { background-color: var(--panel); }
+
+      .hamburger { display: flex; flex-direction: column; gap: 4px; width: 16px; }
+
+      .hamburger span {
+        display: block;
+        width: 100%;
+        height: 1.5px;
+        background-color: var(--graphite);
+        transition: transform 0.2s, opacity 0.2s;
+      }
+
+      .dropdown.active .hamburger span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+      .dropdown.active .hamburger span:nth-child(2) { opacity: 0; }
+      .dropdown.active .hamburger span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 6px 20px rgba(28,33,40,0.10);
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        z-index: 20;
+      }
+
+      .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 11px 16px;
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .dropdown-menu a:hover { background-color: var(--panel); }
+
+      /* ── Back link ── */
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        background: var(--paper-raised);
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 0.9em;
+        transition: border-color 0.2s;
+        margin-bottom: 28px;
+      }
+
+      .back-button:hover { border-color: var(--steel); }
+
+      /* ── Project content ── */
+      .project-content {
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 40px;
+      }
+
+      .project-content h1 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8em, 4vw, 2.3em);
+        font-weight: 700;
+        margin: 0 0 14px 0;
+        color: var(--ink);
+        line-height: 1.15;
+      }
+
+      .project-meta {
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+        color: var(--graphite);
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .project-meta strong { color: var(--ink); font-weight: 500; }
+
+      .project-image {
+        width: 100%;
+        border-radius: 10px;
+        margin: 24px 0;
+        display: block;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+
+      .image-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin: 24px 0;
+      }
+
+      @media (min-width: 700px) {
+        .image-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      .image-grid img {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        display: block;
+      }
+
+      h2 {
+        font-family: var(--font-display);
+        font-size: 1.35em;
+        font-weight: 600;
+        margin: 34px 0 14px 0;
+        color: var(--ink);
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h3 {
+        font-family: var(--font-display);
+        font-size: 1.05em;
+        font-weight: 600;
+        margin: 20px 0 10px 0;
+        color: var(--ink);
+      }
+
+      p { line-height: 1.7; color: var(--graphite); margin-bottom: 16px; }
+
+      ul { line-height: 1.8; color: var(--graphite); margin: 16px 0; padding-left: 20px; }
+
+      li { margin-bottom: 8px; }
+
+      /* Callout box, for a key result or design note */
+      .highlight-box {
+        background: var(--panel);
+        border-left: 3px solid var(--redline);
+        border-radius: 6px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        color: var(--ink);
+        font-size: 0.95em;
+        line-height: 1.6;
+      }
+
+      .highlight-box strong { color: var(--ink); }
+
+      /* Specs grid, echoing the site's title-block panels */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 20px 0;
+      }
+
+      @media (min-width: 560px) {
+        .specs-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      .spec-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: var(--paper);
+      }
+
+      .spec-item strong {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.78em;
+        font-weight: 500;
+        color: var(--graphite);
+        margin-bottom: 6px;
+      }
+
+      /* ── Footer ── */
+      footer {
+        margin-top: 56px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      footer .footer-left { font-family: var(--font-mono); font-size: 12.5px; color: var(--graphite); }
+      footer .footer-links { display: flex; gap: 22px; }
+      footer .footer-links a { font-size: 13px; color: var(--graphite); text-decoration: none; }
+      footer .footer-links a:hover { color: var(--ink); }
+
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav class="site-nav">
+        <div class="dropdown" id="pagesDropdown">
+          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
+            <span class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="/projects/" role="menuitem">Projects</a>
+            <a href="/about/" role="menuitem">About</a>
+            <a href="/contact/" role="menuitem">Contact</a>
+          </div>
+        </div>
+        <a href="/" class="nav-wordmark">Cameron McVeigh</a>
+        <div class="nav-spacer"></div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/projects/">Projects</a>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </nav>
+
+      <a href="/projects/" class="back-button">
+        <span aria-hidden="true">←</span> Back to Projects
+      </a>
+
+      <div class="project-content">
+        <h1>Shoddy Cameron — Automatic Angle of Attack Golf Club</h1>
+        <p class="project-meta">
+          <strong>Type:</strong> Personal project | <strong>Status:</strong> [In progress] | <strong>Year:</strong> [2026]
+        </p>
+
+        <img
+          class="project-image"
+          src="/images/projects/project-5/hero.jpg"
+          alt="[Add a description of the main project photo]"
+        />
+
+        <h2>Project overview</h2>
+        <p>
+          [One or two paragraphs introducing "Shoddy Cameron" — a golf club that automatically adjusts its
+          angle of attack. Explain the idea in plain terms: what problem in a golfer's swing or ball flight
+          it's trying to solve, and why an adjustable clubhead is the chosen approach.]
+        </p>
+
+        <div class="highlight-box">
+          <strong>Key result:</strong> [Summarise the headline outcome once you have one — e.g. the range of
+          angle adjustment achieved, or a test result from the range.]
+        </div>
+
+        <h2>Design challenge</h2>
+        <p>
+          [Describe the constraints you're working within — swing speed and impact forces the mechanism must
+          survive, weight and balance limits before the club feels different to swing, size constraints within
+          a standard clubhead, and how quickly the angle needs to adjust during the swing.]
+        </p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <strong>Adjustment range</strong>
+            [e.g. ±X° of loft]
+          </div>
+          <div class="spec-item">
+            <strong>Response time</strong>
+            [e.g. within the downswing]
+          </div>
+          <div class="spec-item">
+            <strong>Added weight</strong>
+            [vs a standard clubhead]
+          </div>
+          <div class="spec-item">
+            <strong>Actuation method</strong>
+            [e.g. mechanical, spring-loaded, motorised]
+          </div>
+        </div>
+
+        <h2>Design solution</h2>
+        <p>
+          [Explain how the mechanism actually works — what triggers the angle change (swing speed, centrifugal
+          force, an active sensor and actuator, etc.), and how that motion is translated into the clubface
+          rotating or tilting.]
+        </p>
+
+        <h3>Key components</h3>
+        <ul>
+          <li><strong>[Component 1]:</strong> [material, role in the mechanism]</li>
+          <li><strong>[Component 2]:</strong> [material, role in the mechanism]</li>
+          <li><strong>[Component 3]:</strong> [material, role in the mechanism]</li>
+        </ul>
+
+        <h2>Calculations &amp; analysis</h2>
+        <p>[Summarise the analysis behind the design once it exists — swing dynamics, impact loading, FEA on the pivot or hinge, or testing of the adjustment mechanism.]</p>
+        <ul>
+          <li>[Calculation or analysis 1]</li>
+          <li>[Calculation or analysis 2]</li>
+          <li>[Calculation or analysis 3]</li>
+        </ul>
+
+        <h2>Manufacturing approach</h2>
+        <p>
+          [Describe how the clubhead and mechanism are being made — 3D printing for prototyping, machined
+          components for the final version, off-the-shelf hardware you're incorporating, and so on.]
+        </p>
+
+        <div class="highlight-box">
+          <strong>Manufacturing note:</strong> [Flag anything notable about how it's built — a tricky
+          tolerance, a material choice that solved a specific problem, or a manufacturing constraint that
+          shaped the design.]
+        </div>
+
+        <h2>Project photos / further design details</h2>
+
+        <section class="image-grid">
+          <img src="/images/projects/project-5/detail-1.jpg" alt="[Describe this image]" />
+          <img src="/images/projects/project-5/detail-2.jpg" alt="[Describe this image]" />
+        </section>
+
+        <h2>Skills developed</h2>
+        <ul>
+          <li>[Skill 1 — e.g. mechanism design]</li>
+          <li>[Skill 2 — e.g. impact/dynamics analysis]</li>
+          <li>[Skill 3 — e.g. CAD and prototyping]</li>
+          <li>[Skill 4]</li>
+        </ul>
+
+        <h2>Reflection</h2>
+        <p>
+          [Once the project has progressed, reflect on what was hardest to get right, what you'd change with
+          hindsight, and what you learned that you'll carry into future projects.]
+        </p>
+      </div>
+
+      <footer>
+        <span class="footer-left">© 2025 Cameron McVeigh</span>
+        <div class="footer-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        const dropdown = document.getElementById('pagesDropdown');
+        const toggle = dropdown ? dropdown.querySelector<HTMLElement>('.dropdown-toggle') : null;
+
+        if (!dropdown || !toggle) return;
+
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = dropdown.classList.contains('active');
+          dropdown.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', String(!isActive));
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target as Node)) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.focus();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
