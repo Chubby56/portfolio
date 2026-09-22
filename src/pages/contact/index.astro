@@ -4,194 +4,266 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Contact | Cameron McVeigh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
       :root {
-        font-family: system-ui, Arial, sans-serif;
+        --paper: #F1F0EB;
+        --paper-raised: #FCFBF8;
+        --panel: #E9E6DC;
+        --ink: #1C2128;
+        --graphite: #5B6169;
+        --line: #D6D1C4;
+        --line-strong: #B6AF9E;
+        --steel: #3E5A6B;
+        --redline: #A83B2E;
+        --success-bg: #E9EEE9;
+        --success-text: #33513A;
+        --error-bg: #F4E6E3;
+        --error-text: #7A2E22;
+        --font-display: 'Space Grotesk', system-ui, sans-serif;
+        --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+        --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
       }
+
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
-        background: #fafafa;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        position: relative;
+      }
+
+      /* Faint drafting-paper grid, matching the rest of the site */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          repeating-linear-gradient(to right, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px),
+          repeating-linear-gradient(to bottom, rgba(28,33,40,0.035) 0px, rgba(28,33,40,0.035) 1px, transparent 1px, transparent 88px);
       }
 
       main {
-        max-width: 900px;
+        max-width: 980px;
         margin: 0 auto;
-        padding: 48px 20px;
+        padding: 28px 24px 72px;
+        position: relative;
+        z-index: 1;
       }
 
-      /* Navigation Styles */
-      nav { 
-        display: flex; 
+      a { color: inherit; }
+
+      :focus-visible {
+        outline: 2px solid var(--steel);
+        outline-offset: 3px;
+      }
+
+      /* ── Navigation ── */
+      .site-nav {
+        display: flex;
         align-items: center;
-        gap: 16px; 
-        margin-bottom: 32px; 
-        position: relative;
+        gap: 16px;
+        padding-bottom: 18px;
+        margin-bottom: 48px;
+        border-bottom: 1px solid var(--line);
       }
-      
-      .dropdown {
-        position: relative;
-        display: inline-block;
+
+      .nav-wordmark {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
       }
-      
+
+      .nav-spacer { flex: 1; }
+
+      .nav-links {
+        display: none;
+        gap: 28px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        color: var(--graphite);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible { color: var(--ink); border-bottom-color: var(--line-strong); }
+
+      .nav-links a[aria-current="page"] {
+        color: var(--ink);
+        border-bottom-color: var(--redline);
+      }
+
+      @media (min-width: 640px) {
+        .nav-links { display: flex; }
+      }
+
+      .dropdown { position: relative; }
+
       .dropdown-toggle {
-        background: white;
-        border: 1px solid #ddd;
-        padding: 10px 12px;
+        background: none;
+        border: 1px solid var(--line-strong);
+        padding: 9px 11px;
         border-radius: 6px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.2s, border-color 0.2s;
+        transition: background-color 0.15s, border-color 0.15s;
       }
-      
-      .dropdown-toggle:hover {
-        background-color: #f9f9f9;
-        border-color: #999;
-      }
-      
+
+      .dropdown-toggle:hover { background-color: var(--panel); }
+
       .hamburger {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        width: 20px;
+        width: 16px;
       }
-      
+
       .hamburger span {
         display: block;
         width: 100%;
-        height: 2px;
-        background-color: #333;
-        border-radius: 2px;
+        height: 1.5px;
+        background-color: var(--graphite);
         transition: transform 0.2s, opacity 0.2s;
       }
-      
-      .dropdown.active .hamburger span:nth-child(1) {
-        transform: translateY(6px) rotate(45deg);
-      }
-      
-      .dropdown.active .hamburger span:nth-child(2) {
-        opacity: 0;
-      }
-      
-      .dropdown.active .hamburger span:nth-child(3) {
-        transform: translateY(-6px) rotate(-45deg);
-      }
-      
+
+      .dropdown.active .hamburger span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+      .dropdown.active .hamburger span:nth-child(2) { opacity: 0; }
+      .dropdown.active .hamburger span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
       .dropdown-menu {
         position: absolute;
         top: calc(100% + 8px);
         left: 0;
-        background: white;
-        border: 1px solid #ddd;
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(28,33,40,0.10);
         min-width: 160px;
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-8px);
+        transform: translateY(-6px);
         transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-        z-index: 1000;
+        z-index: 20;
       }
-      
+
       .dropdown.active .dropdown-menu {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
-      
+
       .dropdown-menu a {
         display: block;
-        padding: 12px 16px;
-        color: inherit;
+        padding: 11px 16px;
+        color: var(--ink);
         text-decoration: none;
-        transition: background-color 0.2s;
-      }
-      
-      .dropdown-menu a:first-child {
-        border-radius: 8px 8px 0 0;
-      }
-      
-      .dropdown-menu a:last-child {
-        border-radius: 0 0 8px 8px;
-      }
-      
-      .dropdown-menu a:hover {
-        background-color: #f5f5f5;
+        font-size: 14px;
       }
 
-      /* Page Header */
+      .dropdown-menu a:hover { background-color: var(--panel); }
+
+      .dropdown-menu a[aria-current="page"] {
+        color: var(--redline);
+        font-weight: 500;
+      }
+
+      /* ── Page header ── */
       .page-header {
-        text-align: center;
-        margin-bottom: 48px;
+        margin-bottom: 44px;
       }
 
       .page-header h1 {
-        font-size: 2.5em;
-        margin: 0 0 16px 0;
+        font-family: var(--font-display);
+        font-size: clamp(2em, 5vw, 2.7em);
+        font-weight: 700;
+        margin: 0;
+        color: var(--ink);
+        line-height: 1.1;
       }
+
+      .page-dimension { margin: 14px 0 20px; }
 
       .page-header p {
-        font-size: 1.1em;
-        margin: 8px 0;
-        color: #555;
+        font-size: 1.05em;
+        line-height: 1.6;
+        color: var(--graphite);
+        max-width: 56ch;
+        margin: 0;
       }
 
-      /* Contact Container */
+      /* ── Contact layout ── */
       .contact-container {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 32px;
-        margin-top: 32px;
+        gap: 22px;
       }
 
-      @media (min-width: 768px) {
+      @media (min-width: 760px) {
         .contact-container {
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1.2fr 1fr;
+          align-items: start;
         }
       }
 
-      /* Contact Form */
-      .contact-form {
-        background: white;
-        padding: 32px;
-        border-radius: 16px;
-        border: 1px solid #ddd;
+      .contact-form,
+      .contact-info {
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 30px 32px;
       }
 
-      .contact-form h2 {
-        margin: 0 0 24px 0;
-        font-size: 1.5em;
+      .contact-form h2,
+      .contact-info h2 {
+        font-family: var(--font-display);
+        font-size: 1.3em;
+        font-weight: 600;
+        margin: 0 0 22px 0;
+        color: var(--ink);
       }
 
-      .form-group {
-        margin-bottom: 20px;
-      }
+      .form-group { margin-bottom: 18px; }
 
       .form-group label {
         display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: #333;
+        margin-bottom: 7px;
+        font-size: 0.88em;
+        color: var(--graphite);
+        font-family: var(--font-mono);
       }
 
       .form-group input,
       .form-group textarea {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
+        padding: 11px 13px;
+        border: 1px solid var(--line);
         border-radius: 8px;
-        font-family: inherit;
-        font-size: 1em;
+        font-family: var(--font-body);
+        font-size: 0.98em;
+        color: var(--ink);
+        background: var(--paper);
         transition: border-color 0.2s;
-        box-sizing: border-box;
       }
 
       .form-group input:focus,
       .form-group textarea:focus {
         outline: none;
-        border-color: #0066cc;
+        border-color: var(--steel);
       }
 
       .form-group textarea {
@@ -201,134 +273,138 @@
 
       .submit-btn {
         width: 100%;
-        padding: 14px;
-        background: #0066cc;
-        color: white;
+        padding: 13px;
+        background: var(--ink);
+        color: var(--paper-raised);
         border: none;
         border-radius: 8px;
-        font-size: 1em;
+        font-size: 0.95em;
         font-weight: 500;
         cursor: pointer;
         transition: background-color 0.2s;
       }
 
-      .submit-btn:hover {
-        background: #0052a3;
-      }
+      .submit-btn:hover { background: var(--steel); }
 
       .submit-btn:disabled {
-        background: #ccc;
+        background: var(--line-strong);
         cursor: not-allowed;
       }
 
       .form-status {
         margin-top: 16px;
-        padding: 12px;
+        padding: 12px 14px;
         border-radius: 8px;
+        font-size: 0.92em;
         text-align: center;
         display: none;
       }
 
       .form-status.success {
-        background: #d4edda;
-        color: #155724;
+        background: var(--success-bg);
+        color: var(--success-text);
         display: block;
       }
 
       .form-status.error {
-        background: #f8d7da;
-        color: #721c24;
+        background: var(--error-bg);
+        color: var(--error-text);
         display: block;
       }
 
-      /* Contact Info */
-      .contact-info {
-        background: white;
-        padding: 32px;
-        border-radius: 16px;
-        border: 1px solid #ddd;
+      /* Contact info rendered as a spec panel */
+      .info-panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 26px;
       }
 
-      .contact-info h2 {
-        margin: 0 0 24px 0;
-        font-size: 1.5em;
-      }
-
-      .info-item {
+      .info-row {
         display: flex;
-        align-items: start;
+        justify-content: space-between;
         gap: 16px;
-        margin-bottom: 24px;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.92em;
       }
 
-      .info-icon {
-        width: 40px;
-        height: 40px;
-        background: #f0f0f0;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .info-row:last-child { border-bottom: none; }
+
+      .info-label {
+        color: var(--graphite);
+        font-family: var(--font-mono);
+        font-size: 0.9em;
         flex-shrink: 0;
       }
 
-      .info-content h3 {
-        margin: 0 0 8px 0;
-        font-size: 1.1em;
-        color: #333;
-      }
-
-      .info-content p {
-        margin: 0;
-        color: #666;
-      }
-
-      .info-content a {
-        color: #0066cc;
-        text-decoration: none;
-      }
-
-      .info-content a:hover {
-        text-decoration: underline;
+      .info-value {
+        color: var(--ink);
+        font-weight: 500;
+        text-align: right;
       }
 
       .social-links {
         display: flex;
-        gap: 12px;
-        margin-top: 24px;
+        gap: 10px;
+        flex-wrap: wrap;
       }
 
       .social-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
         padding: 10px 20px;
-        color: white;
+        color: var(--ink);
         text-decoration: none;
+        border: 1px solid var(--line-strong);
         border-radius: 8px;
-        transition: background-color 0.2s;
+        font-size: 0.9em;
+        font-weight: 500;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
       }
 
-      .social-btn.linkedin {
-        background: #0077b5;
+      .social-btn:hover {
+        background: var(--ink);
+        color: var(--paper-raised);
+        border-color: var(--ink);
       }
 
-      .social-btn.linkedin:hover {
-        background: #006396;
+      /* ── Footer ── */
+      footer {
+        margin-top: 68px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
       }
 
-      .social-btn.instagram {
-        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      footer .footer-left {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--graphite);
       }
 
-      .social-btn.instagram:hover {
-        opacity: 0.9;
+      footer .footer-links { display: flex; gap: 22px; }
+
+      footer .footer-links a {
+        font-size: 13px;
+        color: var(--graphite);
+        text-decoration: none;
+      }
+
+      footer .footer-links a:hover { color: var(--ink); }
+
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
       }
     </style>
   </head>
   <body>
     <main>
-      <nav>
+      <nav class="site-nav">
         <div class="dropdown" id="pagesDropdown">
           <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="Navigation menu">
             <span class="hamburger">
@@ -341,20 +417,35 @@
             <a href="/" role="menuitem">Home</a>
             <a href="/projects/" role="menuitem">Projects</a>
             <a href="/about/" role="menuitem">About</a>
-            <a href="/contact/" role="menuitem">Contact</a>
+            <a href="/contact/" role="menuitem" aria-current="page">Contact</a>
           </div>
+        </div>
+        <a href="/" class="nav-wordmark">Cameron McVeigh</a>
+        <div class="nav-spacer"></div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/projects/">Projects</a>
+          <a href="/about/">About</a>
+          <a href="/contact/" aria-current="page">Contact</a>
         </div>
       </nav>
 
-      <div class="page-header">
-        <h1>Get In Touch</h1>
-        <p>I'd love to hear from you. Send me a message and I'll get back to you as soon as possible.</p>
-      </div>
+      <section class="page-header">
+        <h1>Get in touch</h1>
+        <div class="page-dimension" aria-hidden="true">
+          <svg width="130" height="16" viewBox="0 0 130 16" fill="none">
+            <line x1="1" y1="8" x2="129" y2="8" stroke="#B6AF9E" stroke-width="1"/>
+            <line x1="1" y1="3" x2="1" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+            <line x1="129" y1="3" x2="129" y2="13" stroke="#B6AF9E" stroke-width="1"/>
+          </svg>
+        </div>
+        <p>I'd love to hear from you. Send a message and I'll get back to you as soon as possible.</p>
+      </section>
 
       <div class="contact-container">
         <!-- Contact Form -->
         <div class="contact-form">
-          <h2>Send a Message</h2>
+          <h2>Send a message</h2>
           <form id="contactForm">
             <div class="form-group">
               <label for="name">Name *</label>
@@ -376,124 +467,129 @@
               <textarea id="message" name="message" required></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Send Message</button>
-            
+            <button type="submit" class="submit-btn">Send message</button>
+
             <div class="form-status" id="formStatus"></div>
           </form>
         </div>
 
         <!-- Contact Info -->
         <div class="contact-info">
-          <h2>Contact Information</h2>
-          
-          <div class="info-item">
-            <div class="info-icon">📍</div>
-            <div class="info-content">
-              <h3>Location</h3>
-              <p>North east, England, UK</p>
-            </div>
-          </div>
+          <h2>Contact information</h2>
 
-          <div class="info-item">
-            <div class="info-icon">💼</div>
-            <div class="info-content">
-              <h3>Professional</h3>
-              <p>Available for internships and project collaborations</p>
+          <div class="info-panel">
+            <div class="info-row">
+              <span class="info-label">Location</span>
+              <span class="info-value">North East, England, UK</span>
             </div>
-          </div>
-
-          <div class="info-item">
-            <div class="info-icon">🕒</div>
-            <div class="info-content">
-              <h3>Response Time</h3>
-              <p>Typically within 24-48 hours</p>
+            <div class="info-row">
+              <span class="info-label">Availability</span>
+              <span class="info-value">Internships &amp; collaborations</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Response time</span>
+              <span class="info-value">Within 24–48 hours</span>
             </div>
           </div>
 
           <div class="social-links">
-            <a href="https://www.linkedin.com/in/cameron-mcveigh56/" class="social-btn linkedin" target="_blank" rel="noopener noreferrer">
-              <span>💼</span> LinkedIn
-            </a>
-            <a href="https://www.instagram.com/cameron_mcveigh/" class="social-btn instagram" target="_blank" rel="noopener noreferrer">
-              <span>📸</span> Instagram
-            </a>
+            <a href="https://www.linkedin.com/in/cameron-mcveigh56/" class="social-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/cameron_mcveigh/" class="social-btn" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
       </div>
+
+      <footer>
+        <span class="footer-left">© 2025 Cameron McVeigh</span>
+        <div class="footer-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="/contact/" aria-current="page">Contact</a>
+        </div>
+      </footer>
     </main>
 
     <script>
-      // Dropdown functionality
-      const dropdown = document.getElementById('pagesDropdown');
-      const toggle = dropdown.querySelector('.dropdown-toggle');
-      
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isActive = dropdown.classList.contains('active');
-        dropdown.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', !isActive);
-      });
-      
-      document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && dropdown.classList.contains('active')) {
-          dropdown.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.focus();
-        }
-      });
+      (function () {
+        // Dropdown functionality
+        const dropdown = document.getElementById('pagesDropdown');
+        const toggle = dropdown ? dropdown.querySelector<HTMLElement>('.dropdown-toggle') : null;
 
-      // Form handling
-      const form = document.getElementById('contactForm');
-      const formStatus = document.getElementById('formStatus');
-      
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        const data = {
-          name: formData.get('name'),
-          email: formData.get('email'),
-          subject: formData.get('subject'),
-          message: formData.get('message')
-        };
-        
-        // Disable submit button
-        const submitBtn = form.querySelector('.submit-btn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        
-        // Here you would typically send the data to your backend
-        // For now, we'll simulate a successful submission
-        setTimeout(() => {
-          formStatus.className = 'form-status success';
-          formStatus.textContent = 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
-          form.reset();
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
-          
-          // Hide success message after 5 seconds
+        if (dropdown && toggle) {
+          toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = dropdown.classList.contains('active');
+            dropdown.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', String(!isActive));
+          });
+
+          document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target as Node)) {
+              dropdown.classList.remove('active');
+              toggle.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dropdown.classList.contains('active')) {
+              dropdown.classList.remove('active');
+              toggle.setAttribute('aria-expanded', 'false');
+              toggle.focus();
+            }
+          });
+        }
+
+        // Form handling
+        const form = document.getElementById('contactForm') as HTMLFormElement | null;
+        const formStatus = document.getElementById('formStatus');
+
+        if (!form || !formStatus) return;
+
+        const submitBtn = form.querySelector<HTMLButtonElement>('.submit-btn');
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+          const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message')
+          };
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+          }
+
+          // Here you would typically send the data to your backend.
+          // For now, this simulates a successful submission.
           setTimeout(() => {
-            formStatus.style.display = 'none';
-          }, 5000);
-        }, 1000);
-        
-        // Note: To make this form actually work, you'll need to:
-        // 1. Set up a backend endpoint (or use a service like Formspree, Netlify Forms, etc.)
-        // 2. Replace the setTimeout with an actual fetch/ajax call to your endpoint
-        // Example with Formspree:
-        // fetch('https://formspree.io/f/YOUR_FORM_ID', {
-        //   method: 'POST',
-        //   body: JSON.stringify(data),
-        //   headers: { 'Content-Type': 'application/json' }
-        // })
-      });
+            formStatus.className = 'form-status success';
+            formStatus.textContent = "Thank you! Your message has been sent successfully. I'll get back to you soon.";
+            form.reset();
+
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Send message';
+            }
+
+            setTimeout(() => {
+              formStatus.style.display = 'none';
+            }, 5000);
+          }, 1000);
+
+          // To make this form actually work, you'll need to:
+          // 1. Set up a backend endpoint (or use a service like Formspree, Netlify Forms, etc.)
+          // 2. Replace the setTimeout above with a real fetch/ajax call, e.g. with Formspree:
+          // fetch('https://formspree.io/f/YOUR_FORM_ID', {
+          //   method: 'POST',
+          //   body: JSON.stringify(data),
+          //   headers: { 'Content-Type': 'application/json' }
+          // });
+        });
+      })();
     </script>
   </body>
 </html>
