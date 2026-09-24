@@ -446,7 +446,12 @@
         <!-- Contact Form -->
         <div class="contact-form">
           <h2>Send a message</h2>
-          <form id="contactForm">
+          <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p style="display: none;">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+
             <div class="form-group">
               <label for="name">Name *</label>
               <input type="text" id="name" name="name" required />
@@ -484,7 +489,7 @@
             </div>
             <div class="info-row">
               <span class="info-label">Availability</span>
-              <span class="info-value">Job roles  &amp; collaborations</span>
+              <span class="info-value">Placements/internships &amp; professional collaborations</span>
             </div>
             <div class="info-row">
               <span class="info-label">Response time</span>
@@ -551,43 +556,40 @@
           e.preventDefault();
 
           const formData = new FormData(form);
-          const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            subject: formData.get('subject'),
-            message: formData.get('message')
-          };
+          const params = new URLSearchParams();
+          formData.forEach((value, key) => {
+            params.append(key, value.toString());
+          });
 
           if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
           }
 
-          // Here you would typically send the data to your backend.
-          // For now, this simulates a successful submission.
-          setTimeout(() => {
-            formStatus.className = 'form-status success';
-            formStatus.textContent = "Thank you! Your message has been sent successfully. I'll get back to you soon.";
-            form.reset();
+          fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          })
+            .then(() => {
+              formStatus.className = 'form-status success';
+              formStatus.textContent = "Thank you! Your message has been sent successfully. I'll get back to you soon.";
+              form.reset();
+            })
+            .catch(() => {
+              formStatus.className = 'form-status error';
+              formStatus.textContent = 'Something went wrong sending your message. Please try again or email me directly.';
+            })
+            .finally(() => {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send message';
+              }
 
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Send message';
-            }
-
-            setTimeout(() => {
-              formStatus.style.display = 'none';
-            }, 5000);
-          }, 1000);
-
-          // To make this form actually work, you'll need to:
-          // 1. Set up a backend endpoint (or use a service like Formspree, Netlify Forms, etc.)
-          // 2. Replace the setTimeout above with a real fetch/ajax call, e.g. with Formspree:
-          // fetch('https://formspree.io/f/YOUR_FORM_ID', {
-          //   method: 'POST',
-          //   body: JSON.stringify(data),
-          //   headers: { 'Content-Type': 'application/json' }
-          // });
+              setTimeout(() => {
+                formStatus.style.display = 'none';
+              }, 5000);
+            });
         });
       })();
     </script>
